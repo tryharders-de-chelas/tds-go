@@ -7,19 +7,6 @@ class Board {
     private val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
 
     private fun isInBounds(position: Pair<Int, Int>) = position.first in 0..BOARD_SIZE && position.second in 0..BOARD_SIZE
-    fun draw(){
-        println(((0..<lines).map { 'A' + it }).joinToString( prefix = " ".repeat(2), separator = " "))
-        board.forEachIndexed { idx, line -> println(line.joinToString(prefix = "${lines - idx} ", separator = " ") { it.state.value }) }
-    }
-
-    fun play(str: String){
-        val position = isPosition(str)
-        position ?: return
-        if(isLegal(position)){
-            board[position.first][position.second] = Cell(player.state)
-            turn++
-        }
-    }
 
     private fun isPosition(str: String): Pair<Int, Int> {
         require(str.length !in 2..3 && str.indexOfFirst{ it.isLetter() } == 1){"Invalid format"}
@@ -32,10 +19,10 @@ class Board {
 
     private fun isLegal(position: Pair<Int, Int>) = isFree(position) && isInBounds(position) && cantBeCaptured(position)
 
-
     private fun isFree(position: Pair<Int, Int>) = board[position.first][position.second].state == State.FREE
 
-    private fun cantBeCaptured(position: Pair<Int, Int>) = surroundingCells(position).all { it.state == player.other.state } //Incomplete
+    private fun cantBeCaptured(position: Pair<Int, Int>) = surroundingCells(position).all { it.state == player.other.state }
+    //TODO("Make it work for cases in which a group of more than 2 cells are surrounded")
 
     private fun surroundingCells(position: Pair<Int, Int>): MutableList<Cell>{
         val mutableList = mutableListOf<Cell>()
@@ -48,5 +35,23 @@ class Board {
         if(position.second != BOARD_SIZE)
             mutableList.add(board[position.first][position.second+1])
         return mutableList
+    }
+
+    fun getPosition(str: String): Cell {
+        val position = isPosition(str)
+        return board[position.first][position.second]
+    }
+
+    fun play(str: String){
+        val position = isPosition(str)
+        if(isLegal(position)){
+            board[position.first][position.second] = Cell(player.state)
+            turn++
+        }
+    }
+
+    fun draw(){
+        println(((0..<lines).map { 'A' + it }).joinToString( prefix = " ".repeat(2), separator = " "))
+        board.forEachIndexed { idx, line -> println(line.joinToString(prefix = "${lines - idx} ", separator = " ") { it.state.value }) }
     }
 }

@@ -1,8 +1,10 @@
 
 import model.BOARD_SIZE
 import model.Board
+import model.State
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
+
 
 class BoardTest {
     private val board = Board()
@@ -13,12 +15,19 @@ class BoardTest {
 
     @Test
     fun `test illegal out of board move`(){
-        TODO()
+        org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
+            board.play("z1")
+        }
     }
 
     @Test
     fun `test legal moves`(){
-        TODO()
+        board.play("a1")
+        board.play("b1")
+        board.play("c1")
+        assertTrue(board.getPosition("a1").state == State.BLACK)
+        assertTrue(board.getPosition("b1").state == State.WHITE)
+        assertTrue(board.getPosition("c1").state == State.BLACK)
     }
 
     fun `test pass move`(){
@@ -27,7 +36,10 @@ class BoardTest {
 
     @Test
     fun `test invalid positions`(){
-        TODO()
+        board.play("a1")
+        org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
+            board.play("a1")
+        }
     }
 
 }
