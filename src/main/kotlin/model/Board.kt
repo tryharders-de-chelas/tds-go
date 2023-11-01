@@ -37,7 +37,7 @@ data class Board(
 
     operator fun get(str: String): State = board[toPosition(str)].state
 
-    fun play(str: String): Board? {
+    fun play(str: String): Board {
         val position = toPosition(str)
         require(isLegal(position))
         val toRemove = canCapture()
