@@ -71,21 +71,22 @@ data class Board(
 
     fun getPosition(str: String): Cell = board[toPosition(str)]
 
-    fun play(str: String): Board? {
+    fun play(str: String): Pair<Board,Int>? {
         val position = toPosition(str)
         require(isLegal(position))
         val toRemove = canCapture(position)
-        return if(toRemove.isNotEmpty()) copy(board=board.mapIndexed{idx,value->
+        return if(toRemove.isNotEmpty()) Pair(copy(board=board.mapIndexed{idx,value->
             when {
                 idx == position->Cell(position, player.state)
                 (Cell(idx,player.other.state) in toRemove) -> Cell(position,State.FREE)
                 else -> value
             }
         },turn=turn + 1
-        ) else if (cantBeCaptured(position)) copy(
+        ),toRemove.size)
+        else if (cantBeCaptured(position)) Pair(copy(
             board=board.mapIndexed{idx, value -> if(idx == position) Cell(position, player.state) else value},
             turn = turn + 1
-        )
+        ),0)
         else null
     }
 
