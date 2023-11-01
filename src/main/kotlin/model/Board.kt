@@ -1,35 +1,37 @@
 package model
 
 data class Board(
-    val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it+1) },
+    val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
     val turn: Int = 1,
     val pass: Pair<Int?, Int?> = null to null
 ) {
     private val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
 
-    private fun isInBounds(position: Int) = position in 1..(BOARD_SIZE * BOARD_SIZE)
+    private fun isInBounds(position: Int) = position in 0..<(BOARD_SIZE * BOARD_SIZE)
 
     private fun toPosition(str: String): Int {
-        require(str.length !in 2..3 && str.indexOfFirst{ it.isLetter() } == 1){"Invalid format"}
-        val column: Int? = str.find{ it.isLetter() }?.lowercase()?.toInt()?.minus('a'.code)
-        val line: Int? = str.takeWhile{ it.isDigit() }.toIntOrNull()
+        require(
+            (str.length == 2) || (str.length == 3 && str.indexOfFirst{ it.isLetter() } != 1)
+        ){"Invalid format"}
+        val column: Int? = str.find{ it.isLetter() }?.lowercaseChar()?.code?.minus('a'.code)
+        val line: Int? = str.filter{ it.isDigit()}.toIntOrNull()
         requireNotNull(column){"Invalid column"}
         requireNotNull(line){"Invalid line"}
-        return (line * BOARD_SIZE) + column
+        return ((line - 1) * BOARD_SIZE) + column
     }
 
     private fun isLegal(position: Int) = isFree(position) && isInBounds(position)
 
     private fun canCapture(position: Int): List<Cell>{
         val cell=board[position]
-        val up = searchSurrond(cell.up())
-        val down =searchSurrond(cell.down())
-        val left = searchSurrond(cell.left())
-        val right =searchSurrond(cell.right())
+        val up = searchSurround(cell.up())
+        val down =searchSurround(cell.down())
+        val left = searchSurround(cell.left())
+        val right =searchSurround(cell.right())
     return up+down+left+right
     }
 
-    private fun searchSurrond(cell: Cell?):List<Cell>{
+    private fun searchSurround(cell: Cell?):List<Cell>{
         if (cell==null) return listOf()
         return search(cell.id, listOf(board[cell.id]),player.other.state) ?: return listOf()
     }
@@ -63,18 +65,18 @@ data class Board(
 
     //TODO("Make it work for cases in which a group of more than 2 cells are surrounded")
 
-    fun Cell.up() = if(board[id].row == 0) null else board[id - BOARD_SIZE]
-    fun Cell.right() = if(board[id].col == BOARD_SIZE) null else board[id + 1]
+    private fun Cell.up() = if(row == 1) null else board[id - BOARD_SIZE]
+    private fun Cell.right() = if(col == BOARD_SIZE) null else board[id + 1]
 
-    fun Cell.left() = if(board[id].col == 0) null else board[id - 1]
+    private fun Cell.left() = if(col == 1) null else board[id - 1]
 
-    fun Cell.down() = if(board[id].row == BOARD_SIZE) null else board[id + BOARD_SIZE]
+    private fun Cell.down() = if(row == BOARD_SIZE) null else board[id + BOARD_SIZE]
 
-    fun getPosition(str: String): Cell = board[toPosition(str)]
+    operator fun get(str: String) = board[toPosition(str)].state
 
-    fun play(str: String): Pair<Board,Int>? {
+    fun play(str: String): Pair<Board,Int> {
         val position = toPosition(str)
-        require(isLegal(position))
+        require(isLegal(position)){"Illegal move"}
         val toRemove = canCapture(position)
         return if(toRemove.isNotEmpty()) Pair(copy(board=board.mapIndexed{idx,value->
             when {
@@ -88,7 +90,7 @@ data class Board(
             board=board.mapIndexed{idx, value -> if(idx == position) Cell(position, player.state) else value},
             turn = turn + 1
         ),0)
-        else null
+        else throw IllegalArgumentException("Illegal move")
     }
 
     fun draw(){

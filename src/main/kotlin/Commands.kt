@@ -19,7 +19,7 @@ fun Game.receive(input:String): Game{
 }
 fun create() = Game(board = Board())
 
-fun Game.move( move:String) = copy(board = board.play(move))
+fun Game.move( move:String) = copy(board = board.play(move).first)
 
 fun Game.pass(): Game{
     return pass()
@@ -27,10 +27,10 @@ fun Game.pass(): Game{
 
 fun Game.saveBoard(name:String): Game{
     val writer = createWriter(name)
-    return this
+    TODO()
 }
 
-fun loadBoard(name:String): Game{
+fun Game.loadBoard(name:String): Game{
     val br=createReader(name)
     var line=br.readLine()
     while(line!=null){
@@ -38,7 +38,7 @@ fun loadBoard(name:String): Game{
         serialize(line)
         line=br.readLine()
     }
-
+    TODO()
 }
 
 fun serialize(line: String){
