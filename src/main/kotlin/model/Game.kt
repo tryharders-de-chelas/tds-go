@@ -1,13 +1,8 @@
 package model
 
-data class Game(val board: Board)
+data class Game(val board: Board){
+    fun show(){
+        board.draw()
 
-fun Game.play(move: String) = copy(board = board.play(move))
-
-fun Game.export(){
-    TODO()
-}
-
-fun Game.import(){
-    TODO()
+    }
 }

@@ -2,7 +2,8 @@ package model
 
 data class Board(
     val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it+1) },
-    val turn: Int = 1
+    val turn: Int = 1,
+    val pass: Pair<Int?, Int?> = null to null
 ) {
     private val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
 
