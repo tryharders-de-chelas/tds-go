@@ -35,7 +35,7 @@ data class Board(
 
     fun Cell.down() = if(board[id].row == BOARD_SIZE) null else board[id + BOARD_SIZE]
 
-    fun getPosition(str: String): Cell = board[toPosition(str)]
+    operator fun get(str: String): State = board[toPosition(str)].state
 
     fun play(str: String): Board? {
         val position = toPosition(str)
