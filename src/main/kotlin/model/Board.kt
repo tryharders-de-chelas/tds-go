@@ -6,64 +6,52 @@ data class Board(
     val pass: Pair<Int?, Int?> = null to null
 ) {
     private val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
-
-    private fun isInBounds(position: Int) = position in 0..<(BOARD_SIZE * BOARD_SIZE)
+    operator fun get(str: String) = board[toPosition(str)].state
 
     private fun toPosition(str: String): Int {
         require(
             (str.length == 2) || (str.length == 3 && str.indexOfFirst{ it.isLetter() } != 1)
         ){"Invalid format"}
         val column: Int? = str.find{ it.isLetter() }?.lowercaseChar()?.code?.minus('a'.code)
-        val line: Int? = str.filter{ it.isDigit()}.toIntOrNull()
+        val row: Int? = str.filter{ it.isDigit()}.toIntOrNull()?.minus(1)
         requireNotNull(column){"Invalid column"}
-        requireNotNull(line){"Invalid line"}
-        return ((line - 1) * BOARD_SIZE) + column
+        requireNotNull(row){"Invalid row"}
+        require(isInBounds(row, column)){"Off limits"}
+        return (row * BOARD_SIZE) + column
     }
 
-    private fun isLegal(position: Int) = isFree(position) && isInBounds(position)
+    private fun isInBounds(row: Int, col: Int) = row in 0..<BOARD_SIZE && col in 0..<BOARD_SIZE
+
+    private fun Cell.isFree() = state == State.FREE
 
     private fun canCapture(position: Int): List<Cell>{
         val cell=board[position]
-        val up = searchSurround(cell.up())
-        val down =searchSurround(cell.down())
-        val left = searchSurround(cell.left())
-        val right =searchSurround(cell.right())
-    return up+down+left+right
+        var ans = emptyList<Cell>();
+        for (i in listOf(cell.up(), cell.down(), cell.left(), cell.right())){
+            i ?: continue
+            if(i.state == player.other.state)
+                ans = ans + search(i.id, emptyList(), player.other.state, cell)
+        }
+
+    return ans
     }
 
-    private fun searchSurround(cell: Cell?):List<Cell>{
-        if (cell==null) return listOf()
-        return search(cell.id, listOf(board[cell.id]),player.other.state) ?: return listOf()
-    }
-    private fun isFree(position: Int) = board[position].state == State.FREE
-
-
-    private fun cantBeCaptured(position: Int):Boolean{
-        return search(position,listOf(board[position]),player.state)==null
-    }
-
-    private fun search(position: Int,visited:List<Cell>,state:State):List<Cell>?{
+    private fun search(position: Int,visited:List<Cell>,state:State, src: Cell = board[position]): List<Cell> {
         val cell=board[position]
-        val up = confirmCell(cell.up(), visited,state) ?: return null
-        val down = confirmCell(cell.down(), visited,state) ?: return null
-        val left = confirmCell(cell.left(), visited,state) ?: return null
-        val right = confirmCell(cell.right(), visited,state) ?: return null
-        return up+down+left+right
-    }
-
-    private fun confirmCell(cell:Cell?,visited:List<Cell>,state:State):List<Cell>?{
-        if(cell !in visited){
-            if(cell?.state==State.FREE ){
-                return null
-            }else if(cell!=null && cell.state==state){
-                return search(cell.id,visited+cell,state)
+        if(cell in visited)
+            return emptyList()
+        var list = emptyList<Cell>()
+        for(i in listOf(cell.up(), cell.right(), cell.down(), cell.left())){
+            i ?: continue
+            if(i == src) continue
+            when(i.state){
+                state -> list = list + search(i.id, visited + cell, state, src)
+                State.FREE -> return emptyList()
+                else -> continue
             }
         }
-        return visited
+        return list + cell
     }
-
-
-    //TODO("Make it work for cases in which a group of more than 2 cells are surrounded")
 
     private fun Cell.up() = if(row == 1) null else board[id - BOARD_SIZE]
     private fun Cell.right() = if(col == BOARD_SIZE) null else board[id + 1]
@@ -72,16 +60,16 @@ data class Board(
 
     private fun Cell.down() = if(row == BOARD_SIZE) null else board[id + BOARD_SIZE]
 
-    operator fun get(str: String) = board[toPosition(str)].state
+    private fun cantBeCaptured(position: Int) = search(position, emptyList(), player.state).isEmpty()
 
     fun play(str: String): Pair<Board,Int> {
         val position = toPosition(str)
-        require(isLegal(position)){"Illegal move"}
+        require(board[position].isFree()){"Illegal move"}
         val toRemove = canCapture(position)
         return if(toRemove.isNotEmpty()) Pair(copy(board=board.mapIndexed{idx,value->
             when {
                 idx == position->Cell(position, player.state)
-                (Cell(idx,player.other.state) in toRemove) -> Cell(position,State.FREE)
+                toRemove.any{ it.id == idx} -> Cell(position, State.FREE)
                 else -> value
             }
         },turn=turn + 1

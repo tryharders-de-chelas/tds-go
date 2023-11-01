@@ -2,6 +2,7 @@
 import model.BOARD_SIZE
 import model.Board
 import model.State
+import model.seriesOfPlays
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -12,16 +13,14 @@ class BoardTest {
     fun `test illegal out of board move`(){
         val board = Board()
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
-            board.play("z1")
+            board.play("x1")
         }
     }
 
     @Test
     fun `test legal moves`(){
-        val board = Board()
-        board.play("a1")
-        board.play("b1")
-        board.play("c1")
+        val moves = listOf("a1", "b1", "c1")
+        val board = Board().seriesOfPlays(moves)
         assertTrue(board["a1"] == State.BLACK)
         assertTrue(board["b1"] == State.WHITE)
         assertTrue(board["c1"] == State.BLACK)
@@ -38,7 +37,7 @@ class BoardTest {
 
 
     @Test
-    fun `test invalid position`(){
+    fun `test positions`(){
         var board = Board()
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
             board = board.play("aaa2").first
@@ -59,37 +58,36 @@ class BoardTest {
 
     @Test
     fun `test capture in corner`(){
-        var board = Board()
-        board = board.play("a1").first
-        board = board.play("a2").first
-        board = board.play("d5").first
-        board = board.play("b2").first
-        board = board.play("c5").first
-        board = board.play("b1").first
-        board.draw()
+        val moves = listOf("a1", "a2", "d5", "b2", "c5", "b1")
+        val board = Board().seriesOfPlays(moves)
         assertTrue(board["a1"] == State.FREE)
-        assertTrue(board["a2"] == State.WHITE)
-        assertTrue(board["b2"] == State.WHITE)
-        assertTrue(board["b1"] == State.WHITE)
-        assertTrue(board["d5"] == State.BLACK)
-        assertTrue(board["c5"] == State.BLACK)
+        assertTrue(
+            listOf(board["a2"],board["b2"], board["b1"]).all{it == State.WHITE}
+        )
+        assertTrue(
+            listOf(board["d5"], board["c5"]).all{it == State.BLACK}
+        )
     }
 
     @Test
-    fun `test capture in center`(){
-        var board = Board()
-        board = board.play("f7").first
-        board = board.play("f6").first
-        board = board.play("a1").first
-        board = board.play("f8").first
-        board = board.play("a8").first
-        board = board.play("e7").first
-        board = board.play("b1").first
+    fun `test capture one stone in center`(){
+        val moves = listOf("f7", "f6", "a1", "f8", "a8", "e7", "b1")
+        var board = Board().seriesOfPlays(moves)
         val move = board.play("g7")
         board = move.first
         val capture = move.second
-        board.draw()
         assertTrue(capture == 1)
         assertTrue(board["f7"] == State.FREE)
     }
+
+    @Test
+    fun `test capture multiple stones in center`(){
+        TODO()
+    }
+
+    @Test
+    fun `test capture multiple stones in corner`(){
+        TODO()
+    }
+
 }
