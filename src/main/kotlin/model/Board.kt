@@ -1,7 +1,7 @@
 package model
 
 data class Board(
-    val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
+    val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(((BOARD_SIZE * BOARD_SIZE) - 1) - it) },
     val turn: Int = 1,
     val pass: Pair<Int?, Int?> = null to null
 ) {
@@ -81,14 +81,17 @@ data class Board(
         else throw IllegalArgumentException("Illegal move")
     }
 
-    fun draw(){
-        println(((0..<BOARD_SIZE).map { 'A' + it }).joinToString( prefix = " ".repeat(2), separator = " "))
-        board.chunked(BOARD_SIZE){
-            line -> println(
-                line.joinToString(prefix = "${line.first().row} ", separator = " "){
-                    it.state.value
+    private fun show(): String{
+        val letters = ((0..<BOARD_SIZE).map { 'A' + it }).joinToString( prefix = " ".repeat(2), separator = " ")
+        val lines = board
+            .chunked(BOARD_SIZE)
+            .joinToString(separator = "\n") {
+                line -> line.joinToString(prefix = "${line.first().row} ", separator = " ") {
+                    cell -> cell.state.value
                 }
-            )
-        }
+            }
+        return (letters + "\n" + lines)
     }
+
+    fun draw() = println(show())
 }
