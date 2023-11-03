@@ -71,10 +71,8 @@ class BoardTest {
     @Test
     fun `test capture one stone in center`(){
         val moves = listOf("f7", "f6", "a1", "f8", "a8", "e7", "b1")
-        var board = Board().seriesOfPlays(moves)
-        val move = board.play("g7")
-        board = move.first
-        val capture = move.second
+        val initialBoard = Board().seriesOfPlays(moves)
+        val (board, capture) = initialBoard.play("g7")
         assertTrue(capture == 1)
         assertTrue(board["f7"] == State.FREE)
     }

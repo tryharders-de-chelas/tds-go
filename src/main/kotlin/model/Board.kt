@@ -6,6 +6,7 @@ data class Board(
     val pass: Pair<Int?, Int?> = null to null
 ) {
     private val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
+
     operator fun get(str: String) = board[toPosition(str)].state
 
     private fun toPosition(str: String): Int {
@@ -22,62 +23,70 @@ data class Board(
 
     private fun Cell.isFree() = state == State.FREE
 
-    private fun canCapture(position: Int): List<Cell>{
-        val cell=board[position]
-        var ans = emptyList<Cell>()
-        for (i in listOf(cell.up(), cell.down(), cell.left(), cell.right())){
-            i ?: continue
-            if(i.state == player.other.state)
-                ans = ans + search(i.id, emptyList(), player.other.state, cell)
-        }
+    private fun Cell.canCapture(): List<Cell>{
+        val cellsToCapture = mutableListOf<Cell>()
+        for (cell in around())
+            if(cell.state == player.other.state)
+                cellsToCapture += cell.search(emptyList(), player.other.state, this)
 
-    return ans
+        return cellsToCapture
     }
 
-    private fun search(position: Int,visited:List<Cell>,state:State, src: Cell = board[position]): List<Cell> {
-        val cell=board[position]
-        if(cell in visited)
+    private fun Cell.search(visited:List<Cell>, state:State, src: Cell = this): List<Cell> {
+        if(this in visited)
             return emptyList()
-        var list = emptyList<Cell>()
-        for(i in listOf(cell.up(), cell.right(), cell.down(), cell.left())){
-            i ?: continue
-            if(i == src) continue
-            when(i.state){
-                state -> list = list + search(i.id, visited + cell, state, src)
+        val list = mutableListOf<Cell>()
+        for(cell in around()){
+            if(cell == src)
+                continue
+            when(cell.state){
+                state -> list += cell.search(visited + this, state, src)
                 State.FREE -> return emptyList()
                 else -> continue
             }
         }
-        return list + cell
+        list += this
+        return list
     }
 
     private fun Cell.up() = if(row == 1) null else board[id - BOARD_SIZE]
+
+    private fun Cell.down() = if(row == BOARD_SIZE) null else board[id + BOARD_SIZE]
+
     private fun Cell.right() = if(col == BOARD_SIZE) null else board[id + 1]
 
     private fun Cell.left() = if(col == 1) null else board[id - 1]
 
-    private fun Cell.down() = if(row == BOARD_SIZE) null else board[id + BOARD_SIZE]
+    private fun Cell.around() = listOfNotNull(up(), down(), left(), right())
 
-    private fun cantBeCaptured(position: Int) = search(position, emptyList(), player.state).isEmpty()
+    private fun Cell.hasLiberty() = search(emptyList(), player.state).isEmpty()
+
+    private fun capture(move: Cell, cellsToCapture: List<Cell>): List<Cell> =
+        board.map{ cell ->
+            when(cell) {
+                move -> Cell(cell.id, player.state)
+                in cellsToCapture -> Cell(move.id, State.FREE)
+                else -> cell
+            }
+        }
+
+    private fun switch(cell: Cell) = board.map { if(it == cell) cell.copy(state = player.state) else cell }
+
+    private fun nextState(isCapture: Boolean, move: Cell, cellsToCapture: List<Cell>) =
+        copy(
+            board=if(isCapture) capture(move, cellsToCapture) else switch(move),
+            turn=turn + 1
+        )
 
     fun play(str: String): Pair<Board,Int> {
-        val position = toPosition(str)
-        require(board[position].isFree()){"Illegal move"}
-        val toRemove = canCapture(position)
-        val changedBoard = copy(board=board.mapIndexed{idx,value->
-            when {
-                idx == position->Cell(position, player.state)
-                toRemove.any{ it.id == idx} -> Cell(position, State.FREE)
-                else -> value
-            }
-        },turn=turn + 1
-        )
-        return if(toRemove.isNotEmpty()) changedBoard to toRemove.size
-        else if (cantBeCaptured(position)) Pair(copy(
-            board=board.mapIndexed{idx, value -> if(idx == position) Cell(position, player.state) else value},
-            turn = turn + 1
-        ),0)
-        else throw IllegalArgumentException("Illegal move")
+        val cell = board[toPosition(str)]
+        require(cell.isFree()){"Illegal move"}
+        val cellsToCapture = cell.canCapture()
+        return when{
+            cellsToCapture.isNotEmpty() -> nextState(true, cell, cellsToCapture) to cellsToCapture.size
+            cell.hasLiberty() -> nextState(false, cell, cellsToCapture) to cellsToCapture.size
+            else -> throw IllegalArgumentException("Illegal move")
+        }
     }
 
     private fun show(): String{
