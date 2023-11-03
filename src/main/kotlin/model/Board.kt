@@ -1,7 +1,7 @@
 package model
 
 data class Board(
-    val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(((BOARD_SIZE * BOARD_SIZE) - 1) - it) },
+    val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
     val turn: Int = 1,
     val pass: Pair<Int?, Int?> = null to null
 ) {
@@ -9,9 +9,7 @@ data class Board(
     operator fun get(str: String) = board[toPosition(str)].state
 
     private fun toPosition(str: String): Int {
-        require(
-            (str.length == 2) || (str.length == 3 && str.indexOfFirst{ it.isLetter() } != 1)
-        ){"Invalid format"}
+        require((str.length == 2) || (str.length == 3 && str.indexOfFirst{ it.isLetter() } != 1)){"Invalid format"}
         val column: Int? = str.find{ it.isLetter() }?.lowercaseChar()?.code?.minus('a'.code)
         val row: Int? = str.filter{ it.isDigit()}.toIntOrNull()?.minus(1)
         requireNotNull(column){"Invalid column"}
@@ -26,7 +24,7 @@ data class Board(
 
     private fun canCapture(position: Int): List<Cell>{
         val cell=board[position]
-        var ans = emptyList<Cell>();
+        var ans = emptyList<Cell>()
         for (i in listOf(cell.up(), cell.down(), cell.left(), cell.right())){
             i ?: continue
             if(i.state == player.other.state)
@@ -66,14 +64,15 @@ data class Board(
         val position = toPosition(str)
         require(board[position].isFree()){"Illegal move"}
         val toRemove = canCapture(position)
-        return if(toRemove.isNotEmpty()) Pair(copy(board=board.mapIndexed{idx,value->
+        val changedBoard = copy(board=board.mapIndexed{idx,value->
             when {
                 idx == position->Cell(position, player.state)
                 toRemove.any{ it.id == idx} -> Cell(position, State.FREE)
                 else -> value
             }
         },turn=turn + 1
-        ),toRemove.size)
+        )
+        return if(toRemove.isNotEmpty()) changedBoard to toRemove.size
         else if (cantBeCaptured(position)) Pair(copy(
             board=board.mapIndexed{idx, value -> if(idx == position) Cell(position, player.state) else value},
             turn = turn + 1
@@ -85,6 +84,7 @@ data class Board(
         val letters = ((0..<BOARD_SIZE).map { 'A' + it }).joinToString( prefix = " ".repeat(2), separator = " ")
         val lines = board
             .chunked(BOARD_SIZE)
+            .reversed()
             .joinToString(separator = "\n") {
                 line -> line.joinToString(prefix = "${line.first().row} ", separator = " ") {
                     cell -> cell.state.value

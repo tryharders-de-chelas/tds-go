@@ -1,5 +1,4 @@
 
-import model.BOARD_SIZE
 import model.Board
 import model.State
 import model.seriesOfPlays
@@ -78,16 +77,6 @@ class BoardTest {
         val capture = move.second
         assertTrue(capture == 1)
         assertTrue(board["f7"] == State.FREE)
-    }
-
-    @Test
-    fun `test capture multiple stones in center`(){
-        TODO()
-    }
-
-    @Test
-    fun `test capture multiple stones in corner`(){
-        TODO()
     }
 
 }
