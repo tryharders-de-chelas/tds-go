@@ -3,9 +3,10 @@ package model
 data class Board(
     val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
     val turn: Int = 1,
-    val pass: Pair<Int?, Int?> = null to null
+    val pass: Pair<Boolean, Boolean> = false to false,
+    val prevBoard: List<Cell> = board
 ) {
-    private val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
+    val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
 
     operator fun get(str: String) = board[toPosition(str)].state
 
@@ -61,21 +62,26 @@ data class Board(
 
     private fun Cell.hasLiberty() = search(emptyList(), player.state).isEmpty()
 
-    private fun capture(move: Cell, cellsToCapture: List<Cell>): List<Cell> =
-        board.map{ cell ->
+    private fun capture(move: Cell, cellsToCapture: List<Cell>): List<Cell> {
+        val nextBoard = board.map{ cell ->
             when(cell) {
                 move -> Cell(cell.id, player.state)
                 in cellsToCapture -> Cell(move.id, State.FREE)
                 else -> cell
             }
         }
+        require(nextBoard != prevBoard){"KO Rule"}
+        return nextBoard
+    }
 
-    private fun switch(cell: Cell) = board.map { if(it == cell) cell.copy(state = player.state) else cell }
+    private fun switch(cell: Cell) = board.map { if(it == cell) cell.copy(state = player.state) else it }
 
     private fun nextState(isCapture: Boolean, move: Cell, cellsToCapture: List<Cell>) =
         copy(
             board=if(isCapture) capture(move, cellsToCapture) else switch(move),
-            turn=turn + 1
+            turn=turn + 1,
+            pass=(pass.first && (player != Player.BLACK)) to (pass.second && (player != Player.WHITE)),
+            prevBoard=board
         )
 
     fun play(str: String): Pair<Board,Int> {

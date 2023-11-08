@@ -17,6 +17,16 @@ class BoardTest {
     }
 
     @Test
+    fun `test one legal move`(){
+        org.junit.jupiter.api.assertDoesNotThrow {
+            var board = Board()
+                board = board.play("b2").first
+                board.play("a1")
+
+        }
+    }
+
+    @Test
     fun `test legal moves`(){
         val moves = listOf("a1", "b1", "c1")
         val board = Board().seriesOfPlays(moves)
@@ -77,4 +87,12 @@ class BoardTest {
         assertTrue(board["f7"] == State.FREE)
     }
 
+    @Test
+    fun `test ko rule`(){
+        val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2", )
+        val initialBoard = Board().seriesOfPlays(moves)
+        org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
+            initialBoard.play("b2")
+        }
+    }
 }
