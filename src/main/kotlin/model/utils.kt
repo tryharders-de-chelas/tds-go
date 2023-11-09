@@ -12,9 +12,8 @@ val blackScore get() =
 
 fun Board.seriesOfPlays(moves: List<String>): Board{
     var board = this
-    for(move in moves){
+    for(move in moves)
         board = board.play(move).first
-    }
     return board
 }
 

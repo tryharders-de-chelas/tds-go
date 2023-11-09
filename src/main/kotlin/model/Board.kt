@@ -5,7 +5,7 @@ import kotlinx.serialization.*
 @Serializable
 data class Board(
     val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
-    val turn: Int = 1,
+    private val turn: Int = 1,
     val pass: Pair<Boolean, Boolean> = false to false,
     val prevBoard: List<Cell> = board,
 ) {
@@ -50,15 +50,14 @@ data class Board(
      * to one another and for each group we see if they are surrounded by only one state of pieces(Black or White)
      */
     fun countTerritory():Pair<Int,Int>{
-        var blackTerritory=0
-        var whiteTerritory=0
+        var blackTerritory = 0
+        var whiteTerritory = 0
         val visited= listFree()
         for (space in visited){
-            val current =searchSpace(space)
-            when(current){
-                State.BLACK->blackTerritory+=space.size
-                State.WHITE->whiteTerritory+=space.size
-                else ->continue
+            when(searchSpace(space)){
+                State.BLACK-> blackTerritory += space.size
+                State.WHITE-> whiteTerritory += space.size
+                else -> continue
             }
         }
         return blackTerritory to whiteTerritory
@@ -84,16 +83,18 @@ data class Board(
      * state to signal that this territory is considered neutral
      */
     private fun searchSpace(free:List<Cell>):State{
-        var state=State.FREE
+        var state = State.FREE
         for (cell in free){
             for (adj in cell.around()){
                 when(adj.state){
                     State.FREE -> continue
                     state -> continue
-                    else -> if(state==State.FREE) state=adj.state
-                        else return State.FREE
+                    else ->
+                        if(state==State.FREE)
+                            state=adj.state
+                        else
+                            return State.FREE
                 }
-
             }
         }
         return state
@@ -109,7 +110,8 @@ data class Board(
             return emptyList()
         val list = mutableListOf<Cell>()
         for(cell in around()){
-            if(cell.isFree()) list+=cell.searchFree(visited+this+list)
+            if(cell.isFree())
+                list += cell.searchFree(visited+this+list)
         }
         list += this
         return list
@@ -180,7 +182,7 @@ data class Board(
         copy(
             board=if(isCapture) capture(move, cellsToCapture) else switch(move),
             turn=turn + 1,
-            pass=(pass.first && (player != Player.BLACK)) to (pass.second && (player != Player.WHITE)),
+            pass=pass and ((player != Player.BLACK) to (player != Player.WHITE)),
             prevBoard=board
         )
 

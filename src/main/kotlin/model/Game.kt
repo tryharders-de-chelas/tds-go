@@ -13,17 +13,14 @@ data class Game(
 
     private val isOver get() = board.pass == true to true
 
-    // require(!isOver){ "Game Over" }
-
     fun move(move: String): Game {
         val (board, c) = board.play(move)
-        val pair = if(board.turn % 2 == 0) (0 to c) else (c to 0)
+        val pair = if(board.player == Player.WHITE) (0 to c) else (c to 0)
         return copy(board = board, captures = (captures plus pair))
     }
 
     fun pass(): Game {
-        val pass =
-            (board.pass.first || (board.player == Player.BLACK)) to (board.pass.second || (board.player == Player.WHITE))
+        val pass = board.pass or ((board.player == Player.BLACK) to (board.player == Player.WHITE))
         return copy(board=board.copy(pass = pass))
     }
 

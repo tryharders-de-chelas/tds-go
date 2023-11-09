@@ -414,8 +414,8 @@ class BoardTest {
     @Test
     fun `test territory with neutral`(){
         val moves = listOf("d1","f1","d2","f2","d3","f3","d4","f4","d5","f5","d6","f6","d7","f7","d8","f8","d9","f9")
-        val Board = Board().seriesOfPlays(moves)
-        assertTrue(Board.countTerritory()==27 to 27 )
+        val board = Board().seriesOfPlays(moves)
+        assertTrue(board.countTerritory()==27 to 27 )
         /**
           A B C D E F G H I
         9 . . . # . 0 . . .
