@@ -1,5 +1,8 @@
 package model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Cell(
     val id: Int,
     val state: State = State.FREE,

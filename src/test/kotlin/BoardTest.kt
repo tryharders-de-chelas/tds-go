@@ -89,7 +89,7 @@ class BoardTest {
 
     @Test
     fun `test ko rule`(){
-        val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2", )
+        val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2")
         val initialBoard = Board().seriesOfPlays(moves)
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
             initialBoard.play("b2")

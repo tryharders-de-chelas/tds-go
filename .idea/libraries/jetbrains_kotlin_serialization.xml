@@ -1,0 +1,26 @@
+<component name="libraryTable">
+  <library name="jetbrains.kotlin.serialization" type="repository">
+    <properties maven-id="org.jetbrains.kotlin:kotlin-serialization:1.4.21" />
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-serialization-1.4.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-gradle-plugin-api-1.4.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.4.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-common-1.4.21.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0.jar!/" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-serialization-1.4.21-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-gradle-plugin-api-1.4.21-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.4.21-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-common-1.4.21-javadoc.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-serialization-1.4.21-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-gradle-plugin-api-1.4.21-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-1.4.21-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/kotlin-stdlib-common-1.4.21-sources.jar!/" />
+      <root url="jar://$PROJECT_DIR$/lib/annotations-13.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

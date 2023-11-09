@@ -1,5 +1,8 @@
 package model
 
+import kotlinx.serialization.*
+
+@Serializable
 data class Board(
     val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
     val turn: Int = 1,
