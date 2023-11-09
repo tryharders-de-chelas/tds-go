@@ -14,6 +14,18 @@ class BoardTest {
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
             board.play("x1")
         }
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 . . . . . . . . .
+        1 . . . . . . . . .
+         */
     }
 
     @Test
@@ -21,9 +33,21 @@ class BoardTest {
         org.junit.jupiter.api.assertDoesNotThrow {
             var board = Board()
                 board = board.play("b2").first
-                board.play("a1")
-
+                board.play("a1").first
         }
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 . # . . . . . . .
+        1 0 . . . . . . . .
+         */
+
     }
 
     @Test
@@ -33,6 +57,18 @@ class BoardTest {
         assertTrue(board["a1"] == State.BLACK)
         assertTrue(board["b1"] == State.WHITE)
         assertTrue(board["c1"] == State.BLACK)
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 . . . . . . . . .
+        1 # 0 # . . . . . .
+         */
     }
 
     @Test
@@ -42,6 +78,19 @@ class BoardTest {
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
             board.play("a1")
         }
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 . . . . . . . . .
+        1 # . . . . . . . .
+         */
+
     }
 
 
@@ -63,6 +112,18 @@ class BoardTest {
         org.junit.jupiter.api.assertDoesNotThrow {
             board = board.play("b2").first
         }
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 # 0 . . . . . . .
+        1 . . . . . . . . .
+         */
     }
 
     @Test
@@ -76,6 +137,19 @@ class BoardTest {
         assertTrue(
             listOf(board["d5"], board["c5"]).all{it == State.BLACK}
         )
+        /**
+         * With a capture in A1
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . # # . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 0 0 . . . . . . .
+        1 . 0 . . . . . . .
+         */
     }
 
     @Test
@@ -85,6 +159,20 @@ class BoardTest {
         val (board, capture) = initialBoard.play("g7")
         assertTrue(capture == 1)
         assertTrue(board["f7"] == State.FREE)
+        /**
+         * With a capture in F7
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 # . . . . 0 . . .
+        7 . . . . 0 . 0 . .
+        6 . . . . . 0 . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 . . . . . . . . .
+        1 # # . . . . . . .
+         */
+
     }
 
     @Test
@@ -94,6 +182,19 @@ class BoardTest {
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
             initialBoard.play("b2")
         }
+        /**
+         * With repetition in B2
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 # . . . . . . . .
+        3 . # 0 . . . . . .
+        2 # . # 0 . . . . .
+        1 . # 0 . . . . . .
+         */
     }
 
     @Test
@@ -101,20 +202,60 @@ class BoardTest {
         val moves = listOf("b1", "c1", "a2" )
         val Board = Board().seriesOfPlays(moves)
         assertTrue(Board.countTerritory()==1 to 0)
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 # . . . . . . . .
+        1 . # 0 . . . . . .
+         */
     }
 
 
     @Test
-    fun `test territory count with capture`(){
+    fun `test territory count`(){
         val moves = listOf("b1", "c1", "a2", "d2", "b3", "c3", "c2" ,"a9","a4")
         val Board = Board().seriesOfPlays(moves)
         assertTrue(Board.countTerritory()==3 to 0 )
+        /**
+          A B C D E F G H I
+        9 0 . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 # . . . . . . . .
+        3 . # 0 . . . . . .
+        2 # . # 0 . . . . .
+        1 . # 0 . . . . . .
+
+         */
     }
     @Test
-    fun `test territory count`(){
+    fun `test territory count  with capture`(){
         val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2","a9" )
         val Board = Board().seriesOfPlays(moves)
         assertTrue(Board.countTerritory()==3 to 0 )
+        /**
+         * With a capture in B2
+         *
+          A B C D E F G H I
+        9 0 . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 # . . . . . . . .
+        3 . # 0 . . . . . .
+        2 # . # 0 . . . . .
+        1 . # 0 . . . . . .
+
+         */
     }
 
     @Test
@@ -122,6 +263,18 @@ class BoardTest {
         val moves = listOf("b1","a1","a2")
         val Board = Board().seriesOfPlays(moves)
         assertTrue(Board.countTerritory()==79 to 0 )
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 # . . . . . . . .
+        1 . # . . . . . . .
+         */
     }
 
     @Test
@@ -129,6 +282,40 @@ class BoardTest {
         val moves = listOf("d1","e1","d2","e2","d3","e3","d4","e4","d5","e5","d6","e6","d7","e7","d8","e8","d9","e9")
         val Board = Board().seriesOfPlays(moves)
         assertTrue(Board.countTerritory()==27 to 36 )
+        /**
+          A B C D E F G H I
+        9 . . . # 0 . . . .
+        8 . . . # 0 . . . .
+        7 . . . # 0 . . . .
+        6 . . . # 0 . . . .
+        5 . . . # 0 . . . .
+        4 . . . # 0 . . . .
+        3 . . . # 0 . . . .
+        2 . . . # 0 . . . .
+        1 . . . # 0 . . . .
+         */
+    }
+
+
+
+
+    @Test
+    fun `test territory with neutral`(){
+        val moves = listOf("d1","f1","d2","f2","d3","f3","d4","f4","d5","f5","d6","f6","d7","f7","d8","f8","d9","f9")
+        val Board = Board().seriesOfPlays(moves)
+        assertTrue(Board.countTerritory()==27 to 27 )
+        /**
+          A B C D E F G H I
+        9 . . . # . 0 . . .
+        8 . . . # . 0 . . .
+        7 . . . # . 0 . . .
+        6 . . . # . 0 . . .
+        5 . . . # . 0 . . .
+        4 . . . # . 0 . . .
+        3 . . . # . 0 . . .
+        2 . . . # . 0 . . .
+        1 . . . # . 0 . . .
+         */
     }
 
 }
