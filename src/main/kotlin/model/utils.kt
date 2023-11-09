@@ -1,7 +1,6 @@
 package model
 
 const val BOARD_SIZE = 9
-var wantsToEnd=0
 
 fun Board.seriesOfPlays(moves: List<String>): Board{
     var board = this
@@ -10,3 +9,4 @@ fun Board.seriesOfPlays(moves: List<String>): Board{
     }
     return board
 }
+

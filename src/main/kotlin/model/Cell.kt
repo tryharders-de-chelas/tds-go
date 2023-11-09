@@ -11,9 +11,7 @@ data class Cell(
         return false
     }
 
-    override fun hashCode(): Int {
-        return id
-    }
+    override fun hashCode(): Int = id
 
     val row get() = (id / BOARD_SIZE) + 1
     val col get() = (id % BOARD_SIZE) + 1

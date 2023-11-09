@@ -1,5 +1,6 @@
 import model.Board
 import model.Game
+import model.Player
 import kotlin.system.exitProcess
 import java.io.BufferedReader
 import java.io.FileReader
@@ -19,11 +20,13 @@ fun Game.receive(input:String): Game{
 }
 fun create() = Game(board = Board())
 
-fun Game.move( move:String) = copy(board = board.play(move).first)
+fun Game.move(move:String) = copy(board = board.play(move).first)
 
-fun Game.pass(): Game{
-    return pass()
-}
+fun Game.pass(): Game =
+    copy(
+        board=board.copy(pass = (board.pass.first || (board.player == Player.BLACK)) to (board.pass.second || (board.player == Player.WHITE))),
+    )
+
 
 fun Game.saveBoard(name:String): Game{
     val writer = createWriter(name)
