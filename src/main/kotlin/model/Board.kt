@@ -27,8 +27,13 @@ data class Board(
     private fun Cell.canCapture(): List<Cell>{
         val cellsToCapture = mutableListOf<Cell>()
         for (cell in around())
-            if(cell.state == player.other.state)
-                cellsToCapture += cell.search(emptyList(), player.other.state, this)
+            if(cell.state == player.other.state){
+                val x=cell.search(emptyList(), player.other.state, this)
+                if (x.isNotEmpty()){
+                    cellsToCapture += x
+                    cell.search(emptyList(), player.other.state, this)
+                }
+            }
 
         return cellsToCapture
     }
@@ -92,10 +97,13 @@ data class Board(
             return emptyList()
         val list = mutableListOf<Cell>()
         for(cell in around()){
-            if(cell == src)
+            if(cell == src || cell in visited)
                 continue
             when(cell.state){
-                state -> list += cell.search(visited + this, state, src)
+                state ->{ val x=cell.search(visited + this, state, src)
+                    if (x.isEmpty()) return emptyList()
+                    else list += x
+                }
                 State.FREE -> return emptyList()
                 else -> continue
             }
