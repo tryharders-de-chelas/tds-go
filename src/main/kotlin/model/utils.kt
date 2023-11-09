@@ -18,3 +18,16 @@ fun Board.seriesOfPlays(moves: List<String>): Board{
     return board
 }
 
+fun Game.seriesOfMoves(moves: List<String>): Game{
+    var game = this
+    for(move in moves)
+        game = game.move(move)
+    return game
+}
+
+infix fun Pair<Boolean, Boolean>.or(other: Pair<Boolean, Boolean>) = (first || other.first) to (second || other.second)
+
+infix fun Pair<Boolean, Boolean>.and(other: Pair<Boolean, Boolean>) = (first && other.first) to (second && other.second)
+
+infix fun Pair<Int, Int>.plus(other: Pair<Int, Int>) = (first + other.first) to (second + other.second)
+

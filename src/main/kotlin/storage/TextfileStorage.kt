@@ -2,7 +2,7 @@ package storage
 
 import kotlin.io.path.*
 class TextFileStorage<Key, Data>(
-    val baseDirectory: String,
+    private val baseDirectory: String,
     private val serializer: Serializer<Data>
 ): Storage<Key, Data> {
     init{
@@ -10,20 +10,15 @@ class TextFileStorage<Key, Data>(
             if(!exists()) createDirectory()
             else check(isDirectory()){"$name is not a directory"}
         }
-
-//        val path = Path(baseDirectory)
-//        if(!path.exists()) path.createDirectory()
-//        else check(path.isDirectory()){"${path.name} is not a directory"}
     }
 
-    private fun path(key: Key) = Path("$baseDirectory/$key.txt")
+    private fun path(key: Key) = Path("$baseDirectory/$key.json")
 
-    override fun create(key: Key, data: Data) {
+    override fun create(key: Key, data: Data) =
         path(key).let {
             check(!it.exists()) { "File $key already exists" }
             it.writeText(serializer.serialize(data))
         }
-    }
 
     override fun read(key: Key): Data? =
         path(key).let {
@@ -32,13 +27,12 @@ class TextFileStorage<Key, Data>(
         }
 
 
-    override fun update(key: Key, data: Data)=
+    override fun update(key: Key, data: Data) =
         path(key).let {
             check(it.exists()) { "File $key does not exist" }
             it.writeText(serializer.serialize(data))
         }
 
-    override fun delete(key: Key)  =
-        check(path(key).deleteIfExists()) { "File $key does not exist" }
+    override fun delete(key: Key)  = check(path(key).deleteIfExists()) { "File $key does not exist" }
 
 }

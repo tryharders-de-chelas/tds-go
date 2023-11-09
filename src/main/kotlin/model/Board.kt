@@ -1,15 +1,15 @@
 package model
 
 import kotlinx.serialization.*
-import kotlinx.serialization.json.*
 
 @Serializable
 data class Board(
     val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
     val turn: Int = 1,
     val pass: Pair<Boolean, Boolean> = false to false,
-    val prevBoard: List<Cell> = board
+    val prevBoard: List<Cell> = board,
 ) {
+
     val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
 
     operator fun get(str: String) = board[toPosition(str)].state
