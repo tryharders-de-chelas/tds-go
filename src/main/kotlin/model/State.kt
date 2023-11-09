@@ -1,5 +1,5 @@
 package model
 
 enum class State(val value:String){
-    FREE("."), WHITE("#"), BLACK("0")
+    FREE("."), WHITE("0"), BLACK("#");
 }
