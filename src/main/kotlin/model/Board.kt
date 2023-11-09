@@ -30,8 +30,9 @@ data class Board(
      * pieces is captured ,(A.K.A. ou Cell.search function) by seeing if the pieces around the cell we are putting on the
      * board are captured by our own pieces, we do this by setting the state of our search function to the opponents state
      */
-    private fun Cell.canCapture(): List<Cell>{
-        val cellsToCapture = mutableListOf<Cell>()
+    private fun Cell.canCapture(): Set<Cell>{
+
+        val cellsToCapture = mutableSetOf<Cell>()
         for (cell in around())
             if(cell.state == player.other.state){
                 cellsToCapture+=cell.search(emptyList(), player.other.state, this)
@@ -153,7 +154,7 @@ data class Board(
      * Changes current board by adding the last piece played and removing the pieces that are captured. It also confirms
      * if there isn't a break in the KO rule since it can only happen if there is a possible capture
      */
-    private fun capture(move: Cell, cellsToCapture: List<Cell>): List<Cell> {
+    private fun capture(move: Cell, cellsToCapture: Set<Cell>): List<Cell> {
         val nextBoard = board.map{ cell ->
             when(cell) {
                 move -> Cell(cell.id, player.state)
@@ -171,7 +172,7 @@ data class Board(
      * Creates the new Board with the new position either from capture or switch and updates turns, the pass the same
      * player in his last turn passed and the previous Board so that we can confirm a possible break in the K0 rule
      */
-    private fun nextState(isCapture: Boolean, move: Cell, cellsToCapture: List<Cell>) =
+    private fun nextState(isCapture: Boolean, move: Cell, cellsToCapture: Set<Cell>) =
         copy(
             board=if(isCapture) capture(move, cellsToCapture) else switch(move),
             turn=turn + 1,
