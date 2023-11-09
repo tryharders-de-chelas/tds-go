@@ -37,7 +37,8 @@ data class Board(
         var blackTerritory=0
         var whiteTerritory=0
         var visited= emptyList<List<Cell>>()
-        board.forEach{cell->
+        for(cell in board){
+            if(cell.state!=State.FREE) continue
             if(cell !in visited.flatten())
                 visited+= listOf(cell.searchFree(visited.flatten()))
             }
@@ -72,7 +73,7 @@ data class Board(
         val list = mutableListOf<Cell>()
         for(cell in around()){
             when(cell.state){
-                State.FREE-> cell.searchFree(visited)
+                State.FREE-> list+=cell.searchFree(visited+this+list)
                 else -> continue
             }
         }

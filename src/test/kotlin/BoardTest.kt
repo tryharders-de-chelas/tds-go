@@ -95,4 +95,32 @@ class BoardTest {
             initialBoard.play("b2")
         }
     }
+/*
+    @Test
+    fun `territory count single`(){
+        val moves = listOf("b1", "c1", "a2" )
+        val initialBoard = Board().seriesOfPlays(moves)
+        initialBoard.draw()
+        val x=initialBoard.countTerritory()
+        assertTrue(x==1 to 0)
+    }
+
+*/
+@Test
+fun `territory count 2`(){
+    val moves = listOf("b1", "c1", "a2", "d2", "b3", "c3", "c2" ,"a9","a4")
+    val initialBoard = Board().seriesOfPlays(moves)
+    initialBoard.draw()
+    val x=initialBoard.countTerritory()
+    assertTrue(x==3 to 0 )
+}
+    @Test
+    fun `territory count`(){
+        val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2", )
+        val initialBoard = Board().seriesOfPlays(moves)
+        initialBoard.draw()
+        val x=initialBoard.countTerritory()
+        assertTrue(x==3 to 0 )
+    }
+
 }
