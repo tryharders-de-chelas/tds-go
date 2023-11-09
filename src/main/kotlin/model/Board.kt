@@ -33,6 +33,54 @@ data class Board(
         return cellsToCapture
     }
 
+    fun countTerritory():Pair<Int,Int>{
+        var blackTerritory=0
+        var whiteTerritory=0
+        var visited= emptyList<List<Cell>>()
+        board.forEach{cell->
+            if(cell !in visited.flatten())
+                visited+= listOf(cell.searchFree(visited.flatten()))
+            }
+        for (space in visited){
+            var current =searchSpace(space)
+            when(current){
+                State.BLACK->blackTerritory+=space.size
+                State.WHITE->whiteTerritory+=space.size
+                else ->continue
+            }
+        }
+        return blackTerritory to whiteTerritory
+    }
+
+    private fun searchSpace(free:List<Cell>):State{
+        var state=State.FREE
+        for (cell in free){
+            for (adj in cell.around()){
+                when(adj.state){
+                    State.FREE -> continue
+                    state -> continue
+                    else -> if(state==State.FREE) state=adj.state else return State.FREE
+                }
+
+            }
+        }
+        return state
+    }
+    private fun Cell.searchFree(visited:List<Cell>): List<Cell>{
+        if(this in visited)
+            return emptyList()
+        val list = mutableListOf<Cell>()
+        for(cell in around()){
+            when(cell.state){
+                State.FREE-> cell.searchFree(visited)
+                else -> continue
+            }
+        }
+        list += this
+        return list
+    }
+
+
     private fun Cell.search(visited:List<Cell>, state:State, src: Cell = this): List<Cell> {
         if(this in visited)
             return emptyList()
