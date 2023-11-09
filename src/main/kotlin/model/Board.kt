@@ -115,11 +115,11 @@ data class Board(
         val nextBoard = board.map{ cell ->
             when(cell) {
                 move -> Cell(cell.id, player.state)
-                in cellsToCapture -> Cell(move.id, State.FREE)
+                in cellsToCapture -> Cell(cell.id, State.FREE)
                 else -> cell
             }
         }
-        require(nextBoard != prevBoard){"KO Rule"}
+        require(nextBoard.map{it.state} != prevBoard.map{it.state}){"KO Rule"}
         return nextBoard
     }
 
