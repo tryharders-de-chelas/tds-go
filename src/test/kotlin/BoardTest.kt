@@ -259,12 +259,13 @@ class BoardTest {
         }
 
     @Test
-    fun `test capture surrounded`() {
+    fun `test capture surrounded and territory`() {
         val moves = listOf("d4","c4","d5","c5","e5","d6","f5","e6","f4","f6","f3","g5","e3","g4",
             "d3","g3","a1","f2","a2","e2","a3","d2","a4","c3","a5")
         val initialBoard = Board().seriesOfPlays(moves)
         val (board,capture)=initialBoard.play("e4")
         assertTrue(capture==8)
+        assertTrue(board.countTerritory()==0 to 8)
         /**
           A B C D E F G H I
         9 . . . . . . . . .
@@ -469,8 +470,6 @@ class BoardTest {
         1 . . . # 0 . . . .
          */
     }
-
-
 
 
     @Test
