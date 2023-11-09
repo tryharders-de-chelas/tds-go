@@ -199,15 +199,60 @@ class BoardTest {
 
     @Test
     fun `test ko rule with a 2 piece capture`(){
-        val moves = listOf("b2","e1","c1","f2","d1","e3","e2","c2","c3","i2","d3")//,"d2")//,"e2")//,"d2")
+        val moves = listOf("b2","e1","c1","f2","d1","e3","e2","c2","c3","i2","d3")
         var initialBoard = Board().seriesOfPlays(moves)
-        initialBoard.draw()
-        initialBoard=initialBoard.play("d2").first
-        initialBoard.draw()
-        initialBoard=initialBoard.play("e2").first
-        initialBoard.draw()
-        initialBoard=initialBoard.play("d2").first
-        initialBoard.draw()
+        val (Board1,captures1)=initialBoard.play("d2")
+        assertTrue(captures1==1)
+        val (Board2,captures2)=Board1.play("e2")
+        assertTrue(captures2==2)
+        val (Board3,captures3)=Board2.play("d2")
+        assertTrue(captures3==1)
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . # # 0 . . . .
+        2 . # 0 . # 0 . . 0
+        1 . . # # 0 . . . .
+
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . # # 0 . . . .
+        2 . # 0 0 . 0 . . 0
+        1 . . # # 0 . . . .
+
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . # # 0 . . . .
+        2 . # . . # 0 . . 0
+        1 . . # # 0 . . . .
+
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . # # 0 . . . .
+        2 . # . 0 . 0 . . 0
+        1 . . # # 0 . . . .
+
+         */
 
     }
 
