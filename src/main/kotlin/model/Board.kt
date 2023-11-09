@@ -28,11 +28,7 @@ data class Board(
         val cellsToCapture = mutableListOf<Cell>()
         for (cell in around())
             if(cell.state == player.other.state){
-                val x=cell.search(emptyList(), player.other.state, this)
-                if (x.isNotEmpty()){
-                    cellsToCapture += x
-                    cell.search(emptyList(), player.other.state, this)
-                }
+                cellsToCapture+=cell.search(emptyList(), player.other.state, this)
             }
 
         return cellsToCapture
@@ -70,7 +66,8 @@ data class Board(
                 when(adj.state){
                     State.FREE -> continue
                     state -> continue
-                    else -> if(state==State.FREE) state=adj.state else return State.FREE
+                    else -> if(state==State.FREE) state=adj.state
+                        else return State.FREE
                 }
 
             }
@@ -93,16 +90,15 @@ data class Board(
 
 
     private fun Cell.search(visited:List<Cell>, state:State, src: Cell = this): List<Cell> {
-        if(this in visited)
-            return emptyList()
         val list = mutableListOf<Cell>()
         for(cell in around()){
             if(cell == src || cell in visited)
                 continue
             when(cell.state){
-                state ->{ val x=cell.search(visited + this, state, src)
-                    if (x.isEmpty()) return emptyList()
-                    else list += x
+                state ->{
+                    val newCell=cell.search(visited + this, state, src)
+                    if (newCell.isEmpty()) return emptyList()
+                        else list += newCell
                 }
                 State.FREE -> return emptyList()
                 else -> continue

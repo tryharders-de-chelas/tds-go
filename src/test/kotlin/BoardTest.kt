@@ -200,7 +200,7 @@ class BoardTest {
     @Test
     fun `test ko rule with a 2 piece capture`(){
         val moves = listOf("b2","e1","c1","f2","d1","e3","e2","c2","c3","i2","d3")
-        var initialBoard = Board().seriesOfPlays(moves)
+        val initialBoard = Board().seriesOfPlays(moves)
         val (Board1,captures1)=initialBoard.play("d2")
         assertTrue(captures1==1)
         val (Board2,captures2)=Board1.play("e2")
