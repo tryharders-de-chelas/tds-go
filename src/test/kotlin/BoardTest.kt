@@ -176,7 +176,7 @@ class BoardTest {
     }
 
     @Test
-    fun `test suicidal move`() {
+    fun `test suicidal move one cell`() {
         val moves = listOf("a8", "a1", "b9")
         val initialBoard = Board().seriesOfPlays(moves)
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
@@ -198,6 +198,67 @@ class BoardTest {
     }
 
     @Test
+    fun `test suicidal move`() {
+        val moves = listOf(
+            "c3", "c2", "d3", "d2", "e3", "e2", "c4", "b3", "d4", "b4", "i1", "c5",
+            "i2", "d5", "i3", "f3", "i4", "f4", "i5", "e5"
+        )
+        val initialBoard = Board().seriesOfPlays(moves)
+        org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
+            initialBoard.play("e4")
+        }
+        /**
+         * With illegal move on e4
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . 0 0 0 . . . #
+        4 . 0 # # . 0 . . #
+        3 . 0 # # # 0 . . #
+        2 . . 0 0 0 . . . #
+        1 . . . . . . . . #
+
+         */
+    }
+
+    @Test
+    fun `test one liberty move`() {
+        val moves = listOf(
+            "c3", "c2", "d3", "d2", "e3", "e2", "c4", "b3", "d4", "c5",
+            "i2", "d5", "i3", "f3", "i4", "f4", "i5", "e5"
+        )
+        val initialBoard = Board().seriesOfPlays(moves)
+        initialBoard.draw()
+        initialBoard.play("e4").first.draw()
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . 0 0 0 . . . #
+        4 . . # # . 0 . . #
+        3 . 0 # # # 0 . . #
+        2 . . 0 0 0 . . . #
+        1 . . . . . . . . .
+
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . 0 0 0 . . . #
+        4 . . # # # 0 . . #
+        3 . 0 # # # 0 . . #
+        2 . . 0 0 0 . . . #
+        1 . . . . . . . . .
+
+         */
+        }
+
+    @Test
     fun `test capture surrounded`() {
         val moves = listOf("d4","c4","d5","c5","e5","d6","f5","e6","f4","f6","f3","g5","e3","g4",
             "d3","g3","a1","f2","a2","e2","a3","d2","a4","c3","a5")
@@ -215,6 +276,7 @@ class BoardTest {
         3 # . 0 # # # 0 . .
         2 # . . 0 0 0 . . .
         1 # . . . . . . . .
+
           A B C D E F G H I
         9 . . . . . . . . .
         8 . . . . . . . . .
