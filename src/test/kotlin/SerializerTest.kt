@@ -11,6 +11,6 @@ class SerializerTest {
     fun `test serializer`(){
         val moves = listOf("a1", "d5", "b2")
         val board = Board().seriesOfPlays(moves)
-        println(Json.encodeToString(board))
+        println(BoardSerializer.serialize(board))
     }
 }

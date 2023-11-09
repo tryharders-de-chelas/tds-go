@@ -1,6 +1,7 @@
 package model
 
 import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 @Serializable
 data class Board(
