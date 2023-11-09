@@ -36,14 +36,9 @@ data class Board(
     fun countTerritory():Pair<Int,Int>{
         var blackTerritory=0
         var whiteTerritory=0
-        var visited= emptyList<List<Cell>>()
-        for(cell in board){
-            if(cell.state!=State.FREE) continue
-            if(cell !in visited.flatten())
-                visited+= listOf(cell.searchFree(visited.flatten()))
-            }
+        val visited= listFree()
         for (space in visited){
-            var current =searchSpace(space)
+            val current =searchSpace(space)
             when(current){
                 State.BLACK->blackTerritory+=space.size
                 State.WHITE->whiteTerritory+=space.size
@@ -51,6 +46,16 @@ data class Board(
             }
         }
         return blackTerritory to whiteTerritory
+    }
+
+    private fun listFree():List<List<Cell>>{
+        var visited= emptyList<List<Cell>>()
+        for(cell in board){
+            if(cell.state!=State.FREE) continue
+            if(cell !in visited.flatten())
+                visited+= listOf(cell.searchFree(visited.flatten()))
+        }
+        return visited
     }
 
     private fun searchSpace(free:List<Cell>):State{
