@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="BoardTest" tests="19" skipped="0" failures="0" errors="0" timestamp="2023-11-10T21:20:19" hostname="fedora" time="0.117">
+  <properties/>
+  <testcase name="test capture in corner()" classname="BoardTest" time="0.057"/>
+  <testcase name="test suicidal move()" classname="BoardTest" time="0.005"/>
+  <testcase name="test territory count  with capture()" classname="BoardTest" time="0.004"/>
+  <testcase name="test illegal out of board move()" classname="BoardTest" time="0.001"/>
+  <testcase name="test one legal move()" classname="BoardTest" time="0.003"/>
+  <testcase name="test territory with neutral()" classname="BoardTest" time="0.003"/>
+  <testcase name="test capture one stone in center()" classname="BoardTest" time="0.001"/>
+  <testcase name="test territory full Board()" classname="BoardTest" time="0.002"/>
+  <testcase name="test suicidal move one cell()" classname="BoardTest" time="0.001"/>
+  <testcase name="test legal moves()" classname="BoardTest" time="0.001"/>
+  <testcase name="test ko rule()" classname="BoardTest" time="0.001"/>
+  <testcase name="test capture surrounded and territory()" classname="BoardTest" time="0.004"/>
+  <testcase name="test territory count single()" classname="BoardTest" time="0.001"/>
+  <testcase name="test territory count()" classname="BoardTest" time="0.001"/>
+  <testcase name="test territory fifty fifty()" classname="BoardTest" time="0.002"/>
+  <testcase name="test positions()" classname="BoardTest" time="0.003"/>
+  <testcase name="test one liberty move()" classname="BoardTest" time="0.007"/>
+  <testcase name="test ko rule with a 2 piece capture()" classname="BoardTest" time="0.001"/>
+  <testcase name="test invalid positions on board()" classname="BoardTest" time="0.001"/>
+  <system-out><![CDATA[  A B C D E F G H I 
+9 . . . . . . . . .
+8 . . . . . . . . .
+7 . . . . . . . . .
+6 . . . . . . . . .
+5 . . O O O . . . #
+4 . . # # . O . . #
+3 . O # # # O . . #
+2 . . O O O . . . #
+1 . . . . . . . . .
+
+  A B C D E F G H I 
+9 . . . . . . . . .
+8 . . . . . . . . .
+7 . . . . . . . . .
+6 . . . . . . . . .
+5 . . O O O . . . #
+4 . . # # # O . . #
+3 . O # # # O . . #
+2 . . O O O . . . #
+1 . . . . . . . . .
+
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

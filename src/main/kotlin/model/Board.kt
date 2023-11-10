@@ -178,7 +178,7 @@ data class Board(
         copy(
             board=if(isCapture) capture(move, cellsToCapture) else switch(move),
             turn=turn + 1,
-            pass=pass and ((player != Player.BLACK) to (player != Player.WHITE)),
+            pass=false to false,
             prevBoard=board
         )
 

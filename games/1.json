@@ -1,0 +1,666 @@
+{
+ "board": {
+  "board": [
+   {
+    "id": 0,
+    "state": "FREE"
+   },
+   {
+    "id": 1,
+    "state": "FREE"
+   },
+   {
+    "id": 2,
+    "state": "FREE"
+   },
+   {
+    "id": 3,
+    "state": "FREE"
+   },
+   {
+    "id": 4,
+    "state": "FREE"
+   },
+   {
+    "id": 5,
+    "state": "FREE"
+   },
+   {
+    "id": 6,
+    "state": "FREE"
+   },
+   {
+    "id": 7,
+    "state": "FREE"
+   },
+   {
+    "id": 8,
+    "state": "FREE"
+   },
+   {
+    "id": 9,
+    "state": "FREE"
+   },
+   {
+    "id": 10,
+    "state": "FREE"
+   },
+   {
+    "id": 11,
+    "state": "FREE"
+   },
+   {
+    "id": 12,
+    "state": "FREE"
+   },
+   {
+    "id": 13,
+    "state": "FREE"
+   },
+   {
+    "id": 14,
+    "state": "FREE"
+   },
+   {
+    "id": 15,
+    "state": "FREE"
+   },
+   {
+    "id": 16,
+    "state": "FREE"
+   },
+   {
+    "id": 17,
+    "state": "FREE"
+   },
+   {
+    "id": 18,
+    "state": "FREE"
+   },
+   {
+    "id": 19,
+    "state": "FREE"
+   },
+   {
+    "id": 20,
+    "state": "FREE"
+   },
+   {
+    "id": 21,
+    "state": "FREE"
+   },
+   {
+    "id": 22,
+    "state": "FREE"
+   },
+   {
+    "id": 23,
+    "state": "FREE"
+   },
+   {
+    "id": 24,
+    "state": "FREE"
+   },
+   {
+    "id": 25,
+    "state": "FREE"
+   },
+   {
+    "id": 26,
+    "state": "FREE"
+   },
+   {
+    "id": 27,
+    "state": "FREE"
+   },
+   {
+    "id": 28,
+    "state": "FREE"
+   },
+   {
+    "id": 29,
+    "state": "FREE"
+   },
+   {
+    "id": 30,
+    "state": "FREE"
+   },
+   {
+    "id": 31,
+    "state": "FREE"
+   },
+   {
+    "id": 32,
+    "state": "FREE"
+   },
+   {
+    "id": 33,
+    "state": "FREE"
+   },
+   {
+    "id": 34,
+    "state": "FREE"
+   },
+   {
+    "id": 35,
+    "state": "FREE"
+   },
+   {
+    "id": 36,
+    "state": "FREE"
+   },
+   {
+    "id": 37,
+    "state": "FREE"
+   },
+   {
+    "id": 38,
+    "state": "FREE"
+   },
+   {
+    "id": 39,
+    "state": "FREE"
+   },
+   {
+    "id": 40,
+    "state": "FREE"
+   },
+   {
+    "id": 41,
+    "state": "FREE"
+   },
+   {
+    "id": 42,
+    "state": "FREE"
+   },
+   {
+    "id": 43,
+    "state": "FREE"
+   },
+   {
+    "id": 44,
+    "state": "FREE"
+   },
+   {
+    "id": 45,
+    "state": "FREE"
+   },
+   {
+    "id": 46,
+    "state": "FREE"
+   },
+   {
+    "id": 47,
+    "state": "FREE"
+   },
+   {
+    "id": 48,
+    "state": "FREE"
+   },
+   {
+    "id": 49,
+    "state": "FREE"
+   },
+   {
+    "id": 50,
+    "state": "FREE"
+   },
+   {
+    "id": 51,
+    "state": "FREE"
+   },
+   {
+    "id": 52,
+    "state": "FREE"
+   },
+   {
+    "id": 53,
+    "state": "FREE"
+   },
+   {
+    "id": 54,
+    "state": "FREE"
+   },
+   {
+    "id": 55,
+    "state": "FREE"
+   },
+   {
+    "id": 56,
+    "state": "FREE"
+   },
+   {
+    "id": 57,
+    "state": "FREE"
+   },
+   {
+    "id": 58,
+    "state": "FREE"
+   },
+   {
+    "id": 59,
+    "state": "FREE"
+   },
+   {
+    "id": 60,
+    "state": "FREE"
+   },
+   {
+    "id": 61,
+    "state": "FREE"
+   },
+   {
+    "id": 62,
+    "state": "FREE"
+   },
+   {
+    "id": 63,
+    "state": "FREE"
+   },
+   {
+    "id": 64,
+    "state": "FREE"
+   },
+   {
+    "id": 65,
+    "state": "FREE"
+   },
+   {
+    "id": 66,
+    "state": "FREE"
+   },
+   {
+    "id": 67,
+    "state": "FREE"
+   },
+   {
+    "id": 68,
+    "state": "FREE"
+   },
+   {
+    "id": 69,
+    "state": "FREE"
+   },
+   {
+    "id": 70,
+    "state": "FREE"
+   },
+   {
+    "id": 71,
+    "state": "FREE"
+   },
+   {
+    "id": 72,
+    "state": "FREE"
+   },
+   {
+    "id": 73,
+    "state": "FREE"
+   },
+   {
+    "id": 74,
+    "state": "FREE"
+   },
+   {
+    "id": 75,
+    "state": "FREE"
+   },
+   {
+    "id": 76,
+    "state": "FREE"
+   },
+   {
+    "id": 77,
+    "state": "FREE"
+   },
+   {
+    "id": 78,
+    "state": "FREE"
+   },
+   {
+    "id": 79,
+    "state": "FREE"
+   },
+   {
+    "id": 80,
+    "state": "FREE"
+   }
+  ],
+  "turn": 1,
+  "pass": {
+   "first": false,
+   "second": false
+  },
+  "prevBoard": [
+   {
+    "id": 0,
+    "state": "FREE"
+   },
+   {
+    "id": 1,
+    "state": "FREE"
+   },
+   {
+    "id": 2,
+    "state": "FREE"
+   },
+   {
+    "id": 3,
+    "state": "FREE"
+   },
+   {
+    "id": 4,
+    "state": "FREE"
+   },
+   {
+    "id": 5,
+    "state": "FREE"
+   },
+   {
+    "id": 6,
+    "state": "FREE"
+   },
+   {
+    "id": 7,
+    "state": "FREE"
+   },
+   {
+    "id": 8,
+    "state": "FREE"
+   },
+   {
+    "id": 9,
+    "state": "FREE"
+   },
+   {
+    "id": 10,
+    "state": "FREE"
+   },
+   {
+    "id": 11,
+    "state": "FREE"
+   },
+   {
+    "id": 12,
+    "state": "FREE"
+   },
+   {
+    "id": 13,
+    "state": "FREE"
+   },
+   {
+    "id": 14,
+    "state": "FREE"
+   },
+   {
+    "id": 15,
+    "state": "FREE"
+   },
+   {
+    "id": 16,
+    "state": "FREE"
+   },
+   {
+    "id": 17,
+    "state": "FREE"
+   },
+   {
+    "id": 18,
+    "state": "FREE"
+   },
+   {
+    "id": 19,
+    "state": "FREE"
+   },
+   {
+    "id": 20,
+    "state": "FREE"
+   },
+   {
+    "id": 21,
+    "state": "FREE"
+   },
+   {
+    "id": 22,
+    "state": "FREE"
+   },
+   {
+    "id": 23,
+    "state": "FREE"
+   },
+   {
+    "id": 24,
+    "state": "FREE"
+   },
+   {
+    "id": 25,
+    "state": "FREE"
+   },
+   {
+    "id": 26,
+    "state": "FREE"
+   },
+   {
+    "id": 27,
+    "state": "FREE"
+   },
+   {
+    "id": 28,
+    "state": "FREE"
+   },
+   {
+    "id": 29,
+    "state": "FREE"
+   },
+   {
+    "id": 30,
+    "state": "FREE"
+   },
+   {
+    "id": 31,
+    "state": "FREE"
+   },
+   {
+    "id": 32,
+    "state": "FREE"
+   },
+   {
+    "id": 33,
+    "state": "FREE"
+   },
+   {
+    "id": 34,
+    "state": "FREE"
+   },
+   {
+    "id": 35,
+    "state": "FREE"
+   },
+   {
+    "id": 36,
+    "state": "FREE"
+   },
+   {
+    "id": 37,
+    "state": "FREE"
+   },
+   {
+    "id": 38,
+    "state": "FREE"
+   },
+   {
+    "id": 39,
+    "state": "FREE"
+   },
+   {
+    "id": 40,
+    "state": "FREE"
+   },
+   {
+    "id": 41,
+    "state": "FREE"
+   },
+   {
+    "id": 42,
+    "state": "FREE"
+   },
+   {
+    "id": 43,
+    "state": "FREE"
+   },
+   {
+    "id": 44,
+    "state": "FREE"
+   },
+   {
+    "id": 45,
+    "state": "FREE"
+   },
+   {
+    "id": 46,
+    "state": "FREE"
+   },
+   {
+    "id": 47,
+    "state": "FREE"
+   },
+   {
+    "id": 48,
+    "state": "FREE"
+   },
+   {
+    "id": 49,
+    "state": "FREE"
+   },
+   {
+    "id": 50,
+    "state": "FREE"
+   },
+   {
+    "id": 51,
+    "state": "FREE"
+   },
+   {
+    "id": 52,
+    "state": "FREE"
+   },
+   {
+    "id": 53,
+    "state": "FREE"
+   },
+   {
+    "id": 54,
+    "state": "FREE"
+   },
+   {
+    "id": 55,
+    "state": "FREE"
+   },
+   {
+    "id": 56,
+    "state": "FREE"
+   },
+   {
+    "id": 57,
+    "state": "FREE"
+   },
+   {
+    "id": 58,
+    "state": "FREE"
+   },
+   {
+    "id": 59,
+    "state": "FREE"
+   },
+   {
+    "id": 60,
+    "state": "FREE"
+   },
+   {
+    "id": 61,
+    "state": "FREE"
+   },
+   {
+    "id": 62,
+    "state": "FREE"
+   },
+   {
+    "id": 63,
+    "state": "FREE"
+   },
+   {
+    "id": 64,
+    "state": "FREE"
+   },
+   {
+    "id": 65,
+    "state": "FREE"
+   },
+   {
+    "id": 66,
+    "state": "FREE"
+   },
+   {
+    "id": 67,
+    "state": "FREE"
+   },
+   {
+    "id": 68,
+    "state": "FREE"
+   },
+   {
+    "id": 69,
+    "state": "FREE"
+   },
+   {
+    "id": 70,
+    "state": "FREE"
+   },
+   {
+    "id": 71,
+    "state": "FREE"
+   },
+   {
+    "id": 72,
+    "state": "FREE"
+   },
+   {
+    "id": 73,
+    "state": "FREE"
+   },
+   {
+    "id": 74,
+    "state": "FREE"
+   },
+   {
+    "id": 75,
+    "state": "FREE"
+   },
+   {
+    "id": 76,
+    "state": "FREE"
+   },
+   {
+    "id": 77,
+    "state": "FREE"
+   },
+   {
+    "id": 78,
+    "state": "FREE"
+   },
+   {
+    "id": 79,
+    "state": "FREE"
+   },
+   {
+    "id": 80,
+    "state": "FREE"
+   }
+  ]
+ },
+ "captures": {
+  "first": 0,
+  "second": 0
+ },
+ "isOver": false
+}

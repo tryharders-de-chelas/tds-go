@@ -22,8 +22,8 @@ class TextFileStorage<Key, Data>(
 
     override fun read(key: Key) =
         path(key).let {
-            try { serializer.deserialize(it.readText()) }
-            catch (e: NoSuchFileException) { null }
+            check(it.exists()){ "File $key does not exist"}
+            serializer.deserialize(it.readText())
         }
     
     override fun update(key: Key, data: Data) =

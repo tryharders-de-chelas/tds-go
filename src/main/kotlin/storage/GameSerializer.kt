@@ -8,7 +8,6 @@ object GameSerializer: Serializer<Game> {
     override fun serialize(data: Game): String = Json{
         prettyPrint=true
         prettyPrintIndent=" "
-        encodeDefaults=true
     }.encodeToString(data)
 
     override fun deserialize(text: String): Game = Json.decodeFromString<Game>(text)
