@@ -7,7 +7,7 @@ data class Board(
     val board: List<Cell> = List(BOARD_SIZE * BOARD_SIZE){ Cell(it) },
     private val turn: Int = 1,
     val pass: Pair<Boolean, Boolean> = false to false,
-    val prevBoard: List<Cell> = board,
+    private val prevBoard: List<Cell> = board,
 ) {
 
     val player: Player get() = if(turn % 2 == 0) Player.WHITE else Player.BLACK
@@ -27,6 +27,12 @@ data class Board(
     private fun isInBounds(row: Int, col: Int) = row in 0..<BOARD_SIZE && col in 0..<BOARD_SIZE
 
     private fun Cell.isFree() = state == State.FREE
+
+
+    fun pass(): Board {
+        val pass = pass or ((player == Player.BLACK) to (player == Player.WHITE))
+        return copy(board=board ,pass = pass , turn=turn+1)
+    }
 
 
     /**

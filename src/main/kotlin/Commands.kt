@@ -17,9 +17,16 @@ fun Game.receive(input:String): Game{
 fun main(){
     var game = Game()
     game.show()
+    print(">")
     while(true){
+        try{
         game = game.receive(readln())
-        game.show()
+        }catch (e:Exception){
+            println(e.message)
+        }finally {
+            game.show()
+            print(">")
+        }
     }
 
 }
