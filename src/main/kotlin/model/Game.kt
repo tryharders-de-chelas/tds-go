@@ -18,7 +18,7 @@ data class Game(
         return copy(board = board, captures = (captures plus pair))
     }
 
-    fun results()=(blackScore to 0.0) plus board.countTerritory() plus captures
+    fun results()=(blackScore to 0.0) plusDouble  board.countTerritory() plusDouble  captures
 
 
     fun pass(): Game {
