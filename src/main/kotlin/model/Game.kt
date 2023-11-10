@@ -3,6 +3,7 @@ package model
 import kotlinx.serialization.Serializable
 import storage.GameSerializer
 import storage.TextFileStorage
+import kotlin.system.exitProcess
 
 @Serializable
 data class Game(
@@ -11,13 +12,20 @@ data class Game(
     ){
 
     private val isOver = board.pass == true to true
-/*
-    init{
 
-        require(!isOver)
+    fun execute(command:String): Game {
+        val splitInput=command.split(" ")
+        return when(splitInput[0]){
+            "new" -> Game()
+            "play" -> move(splitInput[1])
+            "pass" -> pass()
+            "save" -> also { saveBoard(splitInput[1]) }
+            "load" -> loadBoard(splitInput[1])
+            "exit" -> exitProcess(0)
+            else -> throw IllegalArgumentException("Invalid command $command")
+        }
     }
 
- */
     fun move(move: String): Game {
         require(!isOver){"Game over"}
         val (board, c) = board.play(move)
@@ -25,17 +33,16 @@ data class Game(
         return copy(board = board, captures = (captures plus pair))
     }
 
-    private fun results()=(blackScore to 0.0) plusDouble  board.countTerritory() plusDouble  captures
+    internal fun score()=(blackScore to 0.0) plusDouble  board.countTerritory() plusDouble  captures
 
+    private fun pass()=copy(board=board.pass())
 
-    fun pass()=copy(board=board.pass())
-
-    fun saveBoard(name:String) =
+    private fun saveBoard(name:String) =
         TextFileStorage<String, Game>("games/", GameSerializer).create(name, this).also {
             println("Game saved successfully")
         }
 
-    fun loadBoard(name:String): Game {
+    private fun loadBoard(name:String): Game {
         val storage = TextFileStorage<String, Game>("games/", GameSerializer).read(name)
             storage ?: throw IllegalArgumentException("game does not exist")
         return storage
@@ -44,14 +51,14 @@ data class Game(
 
     fun show(){
         board.draw()
+        val results=score()
         val turn = "Turn: ${board.player.state.value} (${board.player.name})"
         val captures = "Captures: ${State.BLACK.value}=${captures.first} - ${State.WHITE.value}=${captures.second}"
+        val score = "Score: ${State.BLACK.value}=${results.first} - ${State.WHITE.value}=${results.second}"
         return when(board.pass){
-            (true to true)-> {
-                val result=results()
-                println("GAME OVER     Score: ${State.BLACK.value}=${result.first} - ${State.WHITE.value}=${result.second}")
-            }
-            (false to false)-> println("$turn    $captures")
-        else-> println("Player ${board.player.other.state} passes.   $turn")
-    }}
+            true to true -> println("GAME OVER     $score")
+            false to false -> println("$turn    $captures")
+            else -> println("Player ${board.player.other.state} passes.   $turn")
+        }
+    }
 }

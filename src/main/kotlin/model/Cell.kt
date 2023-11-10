@@ -7,14 +7,17 @@ data class Cell(
     val id: Int,
     val state: State = State.FREE,
 ){
-    override fun equals(other: Any?): Boolean {
+
+    override fun equals(other: Any?): Boolean =
         if(other is Cell)
-            return id == other.id
-        return false
-    }
+            id == other.id
+        else
+            false
+
 
     override fun hashCode(): Int = id
 
     val row get() = (id / BOARD_SIZE) + 1
+
     val col get() = (id % BOARD_SIZE) + 1
 }
