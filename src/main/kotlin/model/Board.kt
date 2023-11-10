@@ -193,7 +193,7 @@ data class Board(
         }
     }
 
-    private fun show(): String{
+     fun show(): String{
         val lines = board.chunked(BOARD_SIZE)
         var letters = "  "
         repeat(BOARD_SIZE){
@@ -205,6 +205,4 @@ data class Board(
         }
         return letters
     }
-
-    fun draw() = println(show())
 }

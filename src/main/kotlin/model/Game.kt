@@ -42,19 +42,16 @@ data class Game(
             println("Game saved successfully")
         }
 
-    private fun loadBoard(name:String): Game {
-        val storage = TextFileStorage<String, Game>("games/", GameSerializer).read(name)
-            storage ?: throw IllegalArgumentException("game does not exist")
-        return storage
-    }
+    private fun loadBoard(name: String): Game =
+        TextFileStorage<String, Game>("games/", GameSerializer).read(name)
 
 
     fun show(){
-        board.draw()
         val results=score()
         val turn = "Turn: ${board.player.state.value} (${board.player.name})"
         val captures = "Captures: ${State.BLACK.value}=${captures.first} - ${State.WHITE.value}=${captures.second}"
         val score = "Score: ${State.BLACK.value}=${results.first} - ${State.WHITE.value}=${results.second}"
+        println(board.show())
         return when(board.pass){
             true to true -> println("GAME OVER     $score")
             false to false -> println("$turn    $captures")
