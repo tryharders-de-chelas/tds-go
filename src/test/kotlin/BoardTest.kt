@@ -230,7 +230,6 @@ class BoardTest {
             "i2", "d5", "i3", "f3", "i4", "f4", "i5", "e5"
         )
         val initialBoard = Board().seriesOfPlays(moves)
-        initialBoard.draw()
         initialBoard.play("e4").first.draw()
         /**
           A B C D E F G H I
