@@ -30,3 +30,5 @@ infix fun Pair<Boolean, Boolean>.and(other: Pair<Boolean, Boolean>) = (first && 
 
 infix fun Pair<Int, Int>.plus(other: Pair<Int, Int>) = (first + other.first) to (second + other.second)
 
+infix fun Pair<Double, Double>.plus(other: Pair<Int, Int>) = (first + other.first) to (second + other.second)
+

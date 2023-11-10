@@ -19,6 +19,9 @@ data class Game(
         return copy(board = board, captures = (captures plus pair))
     }
 
+    fun results()=(blackScore to 0.0) plus board.countTerritory() plus captures
+
+
     fun pass(): Game {
         val pass = board.pass or ((board.player == Player.BLACK) to (board.player == Player.WHITE))
         return copy(board=board.copy(pass = pass))
