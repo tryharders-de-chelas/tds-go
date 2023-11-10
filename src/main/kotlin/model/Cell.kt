@@ -1,9 +1,11 @@
 package model
 
+import kotlinx.serialization.Serializable
+
+@Serializable
 data class Cell(
     val id: Int,
     val state: State = State.FREE,
-    val visited: Boolean = false,
 ){
     override fun equals(other: Any?): Boolean {
         if(other is Cell)

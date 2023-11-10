@@ -176,8 +176,124 @@ class BoardTest {
     }
 
     @Test
+    fun `test suicidal move one cell`() {
+        val moves = listOf("a8", "a1", "b9")
+        val initialBoard = Board().seriesOfPlays(moves)
+        org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
+            initialBoard.play("a9")
+        }
+        /**
+         * With an illegal move in a9
+          A B C D E F G H I
+        9 . # . . . . . . .
+        8 # . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . . . . . . . .
+        4 . . . . . . . . .
+        3 . . . . . . . . .
+        2 . . . . . . . . .
+        1 0 . . . . . . . .
+         */
+    }
+
+    @Test
+    fun `test suicidal move`() {
+        val moves = listOf(
+            "c3", "c2", "d3", "d2", "e3", "e2", "c4", "b3", "d4", "b4", "i1", "c5",
+            "i2", "d5", "i3", "f3", "i4", "f4", "i5", "e5"
+        )
+        val initialBoard = Board().seriesOfPlays(moves)
+        org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
+            initialBoard.play("e4")
+        }
+        /**
+         * With illegal move on e4
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . 0 0 0 . . . #
+        4 . 0 # # . 0 . . #
+        3 . 0 # # # 0 . . #
+        2 . . 0 0 0 . . . #
+        1 . . . . . . . . #
+
+         */
+    }
+
+    @Test
+    fun `test one liberty move`() {
+        val moves = listOf(
+            "c3", "c2", "d3", "d2", "e3", "e2", "c4", "b3", "d4", "c5",
+            "i2", "d5", "i3", "f3", "i4", "f4", "i5", "e5"
+        )
+        val initialBoard = Board().seriesOfPlays(moves)
+        initialBoard.draw()
+        initialBoard.play("e4").first.draw()
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . 0 0 0 . . . #
+        4 . . # # . 0 . . #
+        3 . 0 # # # 0 . . #
+        2 . . 0 0 0 . . . #
+        1 . . . . . . . . .
+
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . . . . . . .
+        5 . . 0 0 0 . . . #
+        4 . . # # # 0 . . #
+        3 . 0 # # # 0 . . #
+        2 . . 0 0 0 . . . #
+        1 . . . . . . . . .
+
+         */
+        }
+
+    @Test
+    fun `test capture surrounded and territory`() {
+        val moves = listOf("d4","c4","d5","c5","e5","d6","f5","e6","f4","f6","f3","g5","e3","g4",
+            "d3","g3","a1","f2","a2","e2","a3","d2","a4","c3","a5")
+        val initialBoard = Board().seriesOfPlays(moves)
+        val (board,capture)=initialBoard.play("e4")
+        assertTrue(capture==8)
+        assertTrue(board.countTerritory()==0 to 8)
+        /**
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . 0 0 0 . . .
+        5 # . 0 # # # 0 . .
+        4 # . 0 # . # 0 . .
+        3 # . 0 # # # 0 . .
+        2 # . . 0 0 0 . . .
+        1 # . . . . . . . .
+
+          A B C D E F G H I
+        9 . . . . . . . . .
+        8 . . . . . . . . .
+        7 . . . . . . . . .
+        6 . . . 0 0 0 . . .
+        5 # . 0 . . . 0 . .
+        4 # . 0 . 0 . 0 . .
+        3 # . 0 . . . 0 . .
+        2 # . . 0 0 0 . . .
+        1 # . . . . . . . .
+         */
+    }
+
+    @Test
     fun `test ko rule`(){
-        val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2", )
+        val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2")
         val initialBoard = Board().seriesOfPlays(moves)
         org.junit.jupiter.api.assertThrows<IllegalArgumentException> {
             initialBoard.play("b2")
@@ -356,13 +472,11 @@ class BoardTest {
     }
 
 
-
-
     @Test
     fun `test territory with neutral`(){
         val moves = listOf("d1","f1","d2","f2","d3","f3","d4","f4","d5","f5","d6","f6","d7","f7","d8","f8","d9","f9")
-        val Board = Board().seriesOfPlays(moves)
-        assertTrue(Board.countTerritory()==27 to 27 )
+        val board = Board().seriesOfPlays(moves)
+        assertTrue(board.countTerritory()==27 to 27 )
         /**
           A B C D E F G H I
         9 . . . # . 0 . . .

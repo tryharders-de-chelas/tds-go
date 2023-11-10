@@ -1,69 +1,32 @@
-import model.Board
 import model.Game
-import model.Player
 import kotlin.system.exitProcess
-import java.io.BufferedReader
-import java.io.FileReader
-import java.io.PrintWriter
 fun Game.receive(input:String): Game{
     val splitInput=input.split(" ")
     return when(splitInput[0]){
-        "new" -> create()
+        "new" -> Game()
         "play" -> move(splitInput[1])
         "pass" -> pass()
-        "save" -> saveBoard(splitInput[1])
+        "save" -> also { saveBoard(splitInput[1]) }
         "load" -> loadBoard(splitInput[1])
         "exit" -> exitProcess(0)
         else -> throw IllegalArgumentException("Invalid command $input")
     }
-
-}
-fun create() = Game(board = Board())
-
-fun Game.move(move:String) = copy(board = board.play(move).first)
-
-fun Game.pass(): Game =
-    copy(
-        board=board.copy(pass = (board.pass.first || (board.player == Player.BLACK)) to (board.pass.second || (board.player == Player.WHITE))),
-    )
-
-
-fun Game.saveBoard(name:String): Game{
-    val writer = createWriter(name)
-    TODO()
 }
 
-fun Game.loadBoard(name:String): Game{
-    val br=createReader(name)
-    var line=br.readLine()
-    while(line!=null){
-
-        serialize(line)
-        line=br.readLine()
-    }
-    TODO()
-}
-
-fun serialize(line: String){
-    TODO()
-}
-
-fun deserialize(game: Game){
-    TODO()
-}
 
 fun main(){
-    var game = create()
+    var game = Game()
+    game.show()
+    print(">")
     while(true){
+        try{
         game = game.receive(readln())
-        game.show()
+        }catch (e:Exception){
+            println(e.message)
+        }finally {
+            game.show()
+            print(">")
+        }
     }
 
-}
-fun createReader(fileName: String): BufferedReader {
-    return BufferedReader(FileReader(fileName))
-}
-
-fun createWriter(fileName: String): PrintWriter {
-    return PrintWriter(fileName)
 }
