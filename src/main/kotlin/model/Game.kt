@@ -7,7 +7,6 @@ import storage.TextFileStorage
 @Serializable
 data class Game(
     private val board: Board = Board(),
-    private val score: Pair<Double, Double> = blackScore to .0,
     private val captures: Pair<Int, Int> = 0 to 0
     ){
 
@@ -38,7 +37,16 @@ data class Game(
     }
 
 
-    fun show(){
+    fun show(score: Pair<Double, Double>? = null){
         board.draw()
+        if(score is Pair<Double, Double>)
+            return println("Game Over $score")
+
+        val turn = "Turn: ${board.player.state} (${board.player.name})"
+        val captures = "Captures: ${State.BLACK}=${captures.first} - ${State.WHITE}=${captures.second}"
+
+        if(board.pass == (false to false))
+            return println("$turn    $captures")
+        return println("Player ${board.player.state} passes.   $turn")
     }
 }
