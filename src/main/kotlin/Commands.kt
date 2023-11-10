@@ -13,8 +13,10 @@ fun Game.receive(input:String): Game{
     }
 }
 
+
 fun main(){
     var game = Game()
+    game.show()
     while(true){
         game = game.receive(readln())
         game.show()
