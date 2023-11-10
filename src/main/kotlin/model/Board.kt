@@ -18,37 +18,29 @@ data class Board(
         require((str.length == 2) || (str.length == 3 && str.indexOfFirst{ it.isLetter() } != 1)){"Invalid format"}
         val column: Int? = str.find{ it.isLetter() }?.lowercaseChar()?.code?.minus('a'.code)
         val row: Int? = str.filter{ it.isDigit()}.toIntOrNull()?.minus(1)
-        requireNotNull(column){"Invalid column"}
-        requireNotNull(row){"Invalid row"}
-        require(isInBounds(row, column)){"Off limits"}
-        return (row * BOARD_SIZE) + column
+        if(column != null && row != null && isInBounds(row, column))
+            return (row * BOARD_SIZE) + column
+        throw IllegalArgumentException("$str is an invalid move")
     }
 
     private fun isInBounds(row: Int, col: Int) = row in 0..<BOARD_SIZE && col in 0..<BOARD_SIZE
 
     private fun Cell.isFree() = state == State.FREE
 
-
     fun pass(): Board {
         val pass = pass or ((player == Player.BLACK) to (player == Player.WHITE))
         return copy(board=board ,pass = pass , turn=turn+1)
     }
 
-
-    /**
-     * For our algorithm of the captures we opted for an option where we reuse the algorithm where we see if a group of
-     * pieces is captured ,(A.K.A. ou Cell.search function) by seeing if the pieces around the cell we are putting on the
-     * board are captured by our own pieces, we do this by setting the state of our search function to the opponents state
-     */
     private fun Cell.canCapture(): Set<Cell>{
 
         val cellsToCapture = mutableSetOf<Cell>()
         for (cell in around())
             if(cell.state == player.other.state){
-                cellsToCapture+=cell.search(emptyList(), player.other.state, this)
+                cellsToCapture+=cell.search(emptySet(), player.other.state, this)
             }
 
-        return cellsToCapture
+        return cellsToCapture.toSet()
     }
 
     /**
@@ -76,9 +68,11 @@ data class Board(
     private fun listFree():List<List<Cell>>{
         var visited= emptyList<List<Cell>>()
         for(cell in board){
-            if(!cell.isFree()) continue
-            if(cell !in visited.flatten())
-                visited+= listOf(cell.searchFree(visited.flatten()))
+            if(!cell.isFree())
+                continue
+            val freeCells = visited.flatten()
+            if(cell !in freeCells)
+                visited+= listOf(cell.searchFree(freeCells))
         }
         return visited
     }
@@ -93,8 +87,7 @@ data class Board(
         for (cell in free){
             for (adj in cell.around()){
                 when(adj.state){
-                    State.FREE -> continue
-                    state -> continue
+                    State.FREE, state -> continue
                     else ->
                         if(state==State.FREE)
                             state=adj.state
@@ -115,12 +108,12 @@ data class Board(
         if(this in visited)
             return emptyList()
         val list = mutableListOf<Cell>()
-        for(cell in around()){
+        for(cell in around())
             if(cell.isFree())
                 list += cell.searchFree(visited+this+list)
-        }
+
         list += this
-        return list
+        return list.toList()
     }
 
     /**
@@ -131,23 +124,24 @@ data class Board(
      * by adding that source one as an opponent's piece. If we see that there are liberties(a free cell adjacent) we
      * only return an empty list to signal that it's safe.
      */
-    private fun Cell.search(visited:List<Cell>, state:State, src: Cell = this): List<Cell> {
-        val list = mutableListOf<Cell>()
+    private fun Cell.search(visited: Set<Cell>, state: State, src: Cell = this): Set<Cell> {
+        val list = mutableSetOf<Cell>()
         for(cell in around()){
             if(cell == src || cell in visited)
                 continue
             when(cell.state){
                 state ->{
                     val newCell=cell.search(visited + this, state, src)
-                    if (newCell.isEmpty()) return emptyList()
-                        else list += newCell
+                    if (newCell.isEmpty())
+                        return emptySet()
+                    list += newCell
                 }
-                State.FREE -> return emptyList()
+                State.FREE -> return emptySet()
                 else -> continue
             }
         }
         list += this
-        return list
+        return list.toSet()
     }
 
     private fun Cell.up() = if(row == 1) null else board[id - BOARD_SIZE]
@@ -160,7 +154,7 @@ data class Board(
 
     private fun Cell.around() = listOfNotNull(up(), down(), left(), right())
 
-    private fun Cell.hasLiberty() = search(emptyList(), player.state).isEmpty()
+    private fun Cell.hasLiberty() = search(emptySet(), player.state).isEmpty()
 
     /**
      * Changes current board by adding the last piece played and removing the pieces that are captured. It also confirms
@@ -180,25 +174,14 @@ data class Board(
 
     private fun switch(cell: Cell) = board.map { if(it == cell) cell.copy(state = player.state) else it }
 
-    /**
-     * Creates the new Board with the new position either from capture or switch and updates turns, the pass the same
-     * player in his last turn passed and the previous Board so that we can confirm a possible break in the K0 rule
-     */
     private fun nextState(isCapture: Boolean, move: Cell, cellsToCapture: Set<Cell>) =
         copy(
             board=if(isCapture) capture(move, cellsToCapture) else switch(move),
             turn=turn + 1,
-            pass=pass and ((player != Player.BLACK) to (player != Player.WHITE)),
+            pass=false to false,
             prevBoard=board
         )
 
-    /**
-     * This function receives the coordinates that the player chose and confirms if the move is legal, if it is it
-     * returns the updated board with the number of cells captured. We do this by confirming first if the move is inside
-     * the table and there isn't any piece in the same cell, then it confirms if we capture any piece since if we capture
-     * it's a legal move, then if we cant capture any piece we confirm if it isn't a suicidal move and only then we say
-     * that we really cant play that move.
-     */
     fun play(str: String): Pair<Board,Int> {
         val cell = board[toPosition(str)]
         require(cell.isFree()){"Illegal move"}
@@ -211,16 +194,16 @@ data class Board(
     }
 
     private fun show(): String{
-        val letters = ((0..<BOARD_SIZE).map { 'A' + it }).joinToString( prefix = " ".repeat(2), separator = " ")
-        val lines = board
-            .chunked(BOARD_SIZE)
-            .reversed()
-            .joinToString(separator = "\n") {
-                line -> line.joinToString(prefix = "${line.first().row} ", separator = " ") {
-                    cell -> cell.state.value
-                }
-            }
-        return (letters + "\n" + lines)
+        val lines = board.chunked(BOARD_SIZE)
+        var letters = "  "
+        repeat(BOARD_SIZE){
+           letters += "${ 'A' + it } "
+        }
+        letters += "\n"
+        for(i in lines.lastIndex downTo 0){
+            letters += lines[i].joinToString(prefix = "${i+1} ", separator = " ", postfix = "\n"){ it.state.value }
+        }
+        return letters
     }
 
     fun draw() = println(show())
