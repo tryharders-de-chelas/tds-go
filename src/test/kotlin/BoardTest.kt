@@ -1,7 +1,6 @@
 
 import model.Board
 import model.State
-import model.seriesOfPlays
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
@@ -29,9 +28,9 @@ class BoardTest {
     fun `test legal moves`(){
         val moves = listOf("a1", "b1", "c1")
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board["a1"] == State.BLACK)
-        assertTrue(board["b1"] == State.WHITE)
-        assertTrue(board["c1"] == State.BLACK)
+        assertEquals(State.BLACK, board["a1"])
+        assertEquals(State.WHITE, board["b1"])
+        assertEquals(State.BLACK, board["c1"])
     }
 
     @Test
@@ -68,7 +67,7 @@ class BoardTest {
     fun `test capture in corner`(){
         val moves = listOf("a1", "a2", "d5", "b2", "c5", "b1")
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board["a1"] == State.FREE)
+        assertEquals(State.FREE, board["a1"])
         assertTrue(
             listOf(board["a2"],board["b2"], board["b1"]).all{it == State.WHITE}
         )
@@ -82,8 +81,8 @@ class BoardTest {
         val moves = listOf("f7", "f6", "a1", "f8", "a8", "e7", "b1")
         val initialBoard = Board().seriesOfPlays(moves)
         val (board, capture) = initialBoard.play("g7")
-        assertTrue(capture == 1)
-        assertTrue(board["f7"] == State.FREE)
+        assertEquals(1, capture)
+        assertEquals(State.FREE, board["f7"])
     }
 
     @Test
@@ -113,8 +112,8 @@ class BoardTest {
             "d3","g3","a1","f2","a2","e2","a3","d2","a4","c3","a5")
         val initialBoard = Board().seriesOfPlays(moves)
         val (board,capture)=initialBoard.play("e4")
-        assertTrue(capture==8)
-        assertTrue(board.countTerritory()==0 to 8)
+        assertEquals(8, capture)
+        assertEquals(0 to 8, board.countTerritory())
     }
 
     @Test
@@ -131,52 +130,60 @@ class BoardTest {
         val moves = listOf("b2","e1","c1","f2","d1","e3","e2","c2","c3","i2","d3")
         val initialBoard = Board().seriesOfPlays(moves)
         val (board1, captures1)=initialBoard.play("d2")
-        assertTrue(captures1==1)
+        assertEquals(captures1, 1)
         val (board2, captures2)=board1.play("e2")
-        assertTrue(captures2==2)
-        val (board3, captures3)=board2.play("d2")
-        assertTrue(captures3==1)
+        assertEquals(captures2, 2)
+        val (_, captures3)=board2.play("d2")
+        assertEquals(captures3, 1)
     }
 
     @Test
     fun `test territory count single`(){
         val moves = listOf("b1", "c1", "a2" )
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board.countTerritory()==1 to 0)
+        assertEquals(1 to 0, board.countTerritory())
     }
 
     @Test
     fun `test territory count`(){
         val moves = listOf("b1", "c1", "a2", "d2", "b3", "c3", "c2" ,"a9","a4")
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board.countTerritory()==3 to 0 )
+        assertEquals(3 to 0, board.countTerritory() )
     }
 
     @Test
     fun `test territory count  with capture`(){
         val moves = listOf("b1", "c1", "a2", "b2", "b3", "c3", "a4", "d2", "c2","a9" )
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board.countTerritory()==3 to 0 )
+        assertEquals(3 to 0, board.countTerritory())
     }
 
     @Test
     fun `test territory full Board`(){
         val moves = listOf("b1","a1","a2")
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board.countTerritory()==79 to 0 )
+        assertEquals(79 to 0, board.countTerritory())
     }
 
     @Test
     fun `test territory fifty fifty`(){
         val moves = listOf("d1","e1","d2","e2","d3","e3","d4","e4","d5","e5","d6","e6","d7","e7","d8","e8","d9","e9")
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board.countTerritory()==27 to 36 )
+        assertEquals(27 to 36, board.countTerritory())
     }
 
     @Test
     fun `test territory with neutral`(){
         val moves = listOf("d1","f1","d2","f2","d3","f3","d4","f4","d5","f5","d6","f6","d7","f7","d8","f8","d9","f9")
         val board = Board().seriesOfPlays(moves)
-        assertTrue(board.countTerritory()==27 to 27 )
+        assertEquals(27 to 27, board.countTerritory())
+    }
+
+    @Test
+    fun `test simultaneous captures`(){
+        val moves = listOf("d4", "d5", "e5", "e6", "f6", "d7", "e7", "c6", "d8", "a1", "c7", "a2", "b6", "a3", "c5", "a4")
+        val board = Board().seriesOfPlays(moves)
+        val (_, captures) = board.play("d6")
+        assertEquals(4, captures)
     }
 }

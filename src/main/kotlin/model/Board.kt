@@ -1,6 +1,8 @@
 package model
 
+import BOARD_SIZE
 import kotlinx.serialization.*
+import or
 
 @Serializable
 data class Board(

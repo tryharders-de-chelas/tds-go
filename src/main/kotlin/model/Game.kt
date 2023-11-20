@@ -1,8 +1,11 @@
 package model
 
+import blackScore
 import kotlinx.serialization.Serializable
+import plus
+import plusDouble
 import storage.GameSerializer
-import storage.TextFileStorage
+import storage.JsonFileStorage
 import kotlin.system.exitProcess
 
 @Serializable
@@ -38,12 +41,12 @@ data class Game(
     private fun pass()=copy(board=board.pass())
 
     private fun saveBoard(name:String) =
-        TextFileStorage<String, Game>("games/", GameSerializer).create(name, this).also {
+        JsonFileStorage<String, Game>("games/", GameSerializer).create(name, this).also {
             println("Game saved successfully")
         }
 
     private fun loadBoard(name: String): Game =
-        TextFileStorage<String, Game>("games/", GameSerializer).read(name)
+        JsonFileStorage<String, Game>("games/", GameSerializer).read(name)
 
 
     fun show(){

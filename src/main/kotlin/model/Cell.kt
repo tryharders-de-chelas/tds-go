@@ -1,5 +1,6 @@
 package model
 
+import BOARD_SIZE
 import kotlinx.serialization.Serializable
 
 @Serializable

@@ -1,7 +1,7 @@
 package storage
 
 import kotlin.io.path.*
-class TextFileStorage<Key, Data>(
+class JsonFileStorage<Key, Data>(
     private val baseDirectory: String,
     private val serializer: Serializer<Data>
 ): Storage<Key, Data> {

@@ -1,5 +1,4 @@
 import model.Game
-import model.seriesOfMoves
 import org.junit.jupiter.api.Test
 import storage.GameSerializer
 import kotlin.test.assertEquals

@@ -1,8 +1,14 @@
-import model.Board
-import model.seriesOfPlays
+import model.Game
 
-fun main(args: Array<String>) {
-
-    // Try adding program arguments via Run/Debug configuration.
-    // Learn more about running applications: https://www.jetbrains.com/help/idea/running-applications.html.
+fun main(){
+    var game = Game()
+    do {
+        try {
+            game.show()
+            print(">")
+            game = game.execute(readln())
+        } catch (e:Exception) {
+            println(e.message)
+        }
+    } while (true)
 }
