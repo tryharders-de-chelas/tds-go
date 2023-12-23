@@ -6,25 +6,25 @@ interface Storage<Key, Data> {
      * @param key the key of the entry.
      * @param data the data to store.
      */
-    fun create(key: Key, data: Data)
+    suspend fun create(key: Key, data: Data)
 
     /**
      * Reads an entry from the storage.
      * @param key the key of the entry.
      * @return the data stored or null if the key does not exist.
      */
-    fun read(key: Key): Data?
+    suspend fun read(key: Key): Data?
 
     /**
      * Updates an entry in the storage.
      * @param key the key of the entry.
      * @param data the new data to store.
      */
-    fun update(key: Key, data: Data)
+    suspend fun update(key: Key, data: Data)
 
     /**
      * Deletes an entry from the storage.
      * @param key the key of the entry.
      */
-    fun delete(key: Key)
+    suspend fun delete(key: Key)
 }
