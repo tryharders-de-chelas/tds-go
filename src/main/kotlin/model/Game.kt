@@ -13,6 +13,10 @@ data class Game(
 
     private val isOver = board.pass == true to true
 
+    internal fun IamOwner(player: Player) = player == Player.WHITE
+
+    internal fun isMyTurn(player: Player) = board.player == player
+
     suspend fun execute(command:String): Game {
         val splitInput=command.split(" ")
         return when(splitInput[0]){
