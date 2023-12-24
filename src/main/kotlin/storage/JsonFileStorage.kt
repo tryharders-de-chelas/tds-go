@@ -14,24 +14,24 @@ class TextFileStorage<Key, Data>(
 
     private fun path(key: Key) = Path("$baseDirectory/$key.json")
 
-    override fun create(key: Key, data: Data) =
+    override suspend fun create(key: Key, data: Data) =
         path(key).let {
             check(!it.exists()) { "File $key already exists" }
             it.writeText(serializer.serialize(data))
         }
 
-    override fun read(key: Key) =
+    override suspend fun read(key: Key) =
         path(key).let {
             check(it.exists()){ "File $key does not exist"}
             serializer.deserialize(it.readText())
         }
     
-    override fun update(key: Key, data: Data) =
+    override suspend fun update(key: Key, data: Data) =
         path(key).let {
             check(it.exists()) { "File $key does not exist" }
             it.writeText(serializer.serialize(data))
         }
 
-    override fun delete(key: Key)  = check(path(key).deleteIfExists()) { "File $key does not exist" }
+    override suspend fun delete(key: Key)  = check(path(key).deleteIfExists()) { "File $key does not exist" }
 
 }
